@@ -1,10 +1,14 @@
 import { Analytics } from '@vercel/analytics/next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
+const geist = Geist({ subsets: ['latin', 'cyrillic'], variable: '--font-geist' })
+const geistMono = Geist_Mono({ subsets: ['latin', 'cyrillic'], variable: '--font-geist-mono' })
+
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'KOREA — Корейский стритфуд',
+  description: 'Корн-доги, ттокпокки и настроение Сеула с доставкой по Москве.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -39,8 +43,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="ru" className="bg-background">
+      <body className={`${geist.variable} ${geistMono.variable} antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
