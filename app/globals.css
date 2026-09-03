@@ -43,6 +43,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-viber: #7360f2;
+  --color-viber-hover: #5d4bd9;
 }
 
 :root {
@@ -159,5 +161,23 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-viber {
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#7360f2] px-5 py-3 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98];
+  }
+
+  .btn-viber-full {
+    @apply mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#7360f2] py-4 font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98];
+  }
+
+  .btn-outline-full {
+    @apply mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border py-4 font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98];
   }
 }
