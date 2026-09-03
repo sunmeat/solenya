@@ -1,10 +1,10 @@
 'use client'
 
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useCallback, MouseEvent } from 'react'
 import { ArrowRight, Check, MapPin, Minus, Music2, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
 
 const VIBER_PHONE_DISPLAY = '+380 96 898 46 26'
-const VIBER_LINK = 'https://msng.link/o/?380968984626=vi'
+const VIBER_RAW_NUMBER = '380968984626'
 const TIKTOK_LINK = 'https://www.tiktok.com/@u_vicktorii'
 const TIKTOK_LINK1 = 'https://www.tiktok.com/@u_vicktorii/video/7640838699357523208'
 const TIKTOK_LINK2 = 'https://www.tiktok.com/@u_vicktorii/video/7575846178714111244'
@@ -43,12 +43,8 @@ const products = [
 ]
 
 const primaryButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md active:scale-[0.98]'
-const primaryButtonSmall = 'inline-flex w-fit cursor-pointer items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md active:scale-[0.98]'
 const outlineButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]'
-const outlineButtonSmall = 'inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]'
-const viberButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-viber px-6 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-viber-hover hover:shadow-md active:scale-[0.98]'
-const viberButtonSmall = 'inline-flex w-fit cursor-pointer items-center gap-2 rounded-full bg-viber px-5 py-3 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-viber-hover hover:shadow-md active:scale-[0.98]'
-const viberButtonFull = 'mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-viber py-4 font-bold text-white shadow-sm transition-all duration-200 hover:bg-viber-hover hover:shadow-md active:scale-[0.98]'
+const viberButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#7360f2] px-6 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]'
 
 export function KFoodSite() {
   const [active, setActive] = useState('Всі')
@@ -61,6 +57,33 @@ export function KFoodSite() {
 
   const add = (id: number) => setCart((c) => ({ ...c, [id]: (c[id] ?? 0) + 1 }))
   const remove = (id: number) => setCart((c) => ({ ...c, [id]: Math.max(0, (c[id] ?? 0) - 1) }))
+
+  // Спеціальний обробник відкриття Viber із фолбеком
+  const handleViberClick = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+
+    const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}`
+    const start = Date.now()
+
+    // Спроба відкрити додаток Viber
+    window.location.href = viberAppUrl
+
+    // Фолбек: якщо через 1.5 секунди користувач все ще на цій сторінці (додаток не відкрився)
+    setTimeout(() => {
+      if (Date.now() - start < 2000) {
+        // Пропонуємо завантажити Viber або перейти в TikTok
+        const confirmDownload = window.confirm(
+          'Схоже, додаток Viber не встановлено.\nБажаєте завантажити Viber? Натисніть "ОК", щоб завантажити Viber, або "Скасувати", щоб перейти у TikTok.'
+        )
+
+        if (confirmDownload) {
+          window.open('https://www.viber.com/download/', '_blank')
+        } else {
+          window.open(TIKTOK_LINK, '_blank')
+        }
+      }
+    }, 1500)
+  }, [])
 
   return (
       <div className="min-h-screen bg-background text-foreground">
@@ -110,7 +133,7 @@ export function KFoodSite() {
                 <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className={outlineButton}>
                   Дивитись TikTok
                 </a>
-                <a href={VIBER_LINK} target="_blank" rel="noreferrer" className={viberButton}>
+                <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className={viberButton}>
                   <Phone size={16} /> Замовлення у Viber: {VIBER_PHONE_DISPLAY}
                 </a>
               </div>
@@ -296,17 +319,16 @@ export function KFoodSite() {
                 Напишіть Вікторії у Viber або TikTok — підкажемо, що сьогодні найсмачніше. Доставляємо по Одесі, по всій Україні та до Європи.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <a href={VIBER_LINK} target="_blank" rel="noreferrer" className="btn-viber">
+                <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className={viberButton}>
                   <Phone size={16} /> Viber: {VIBER_PHONE_DISPLAY}
                 </a>
-                <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="btn-outline">
+                <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className={outlineButton}>
                   Відкрити TikTok <ArrowRight size={16} />
                 </a>
               </div>
             </div>
           </section>
 
-          {/* ===== Elfsight Social Feed ===== */}
           <section className="border-t border-border bg-secondary/40 px-5 py-16 lg:px-10">
             <div className="mx-auto max-w-7xl">
               <div className="mb-10 text-center">
@@ -350,7 +372,7 @@ export function KFoodSite() {
               >
                 <MapPin size={15} /> Північний ринок
               </a>
-              <a href={VIBER_LINK} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-semibold text-[#7360f2] transition-colors duration-200 hover:text-[#5d4bd9]">
+              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className="inline-flex items-center gap-2 font-semibold text-[#7360f2] transition-colors duration-200 hover:text-[#5d4bd9]">
                 <Phone size={15} /> {VIBER_PHONE_DISPLAY}
               </a>
               <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" aria-label="TikTok" className="transition-colors duration-200 hover:text-primary">
@@ -420,11 +442,11 @@ export function KFoodSite() {
                     <span>{total} ₴</span>
                   </div>
 
-                  <a href={VIBER_LINK} target="_blank" rel="noreferrer" className="btn-viber-full">
+                  <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#7360f2] py-4 font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]">
                     <Check size={18} /> Уточнити замовлення у Viber
                   </a>
 
-                  <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="btn-outline-full">
+                  <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]">
                     Уточнити замовлення у TikTok
                   </a>
                 </div>
