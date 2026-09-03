@@ -7,8 +7,8 @@ const geist = Geist({ subsets: ['latin', 'cyrillic'], variable: '--font-geist' }
 const geistMono = Geist_Mono({ subsets: ['latin', 'cyrillic'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'KOREA — Корейский стритфуд',
-  description: 'Корн-доги, ттокпокки и настроение Сеула с доставкой по Москве.',
+  title: 'У Виктории — корейские соленья в Одессе',
+  description: 'Домашние корейские салаты, кимчи и морепродукты на Черёмушках и Новом рынке в Одессе.',
   generator: 'v0.app',
   icons: {
     icon: [
