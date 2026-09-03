@@ -61,7 +61,17 @@ export function KFoodSite() {
   const handleViberClick = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
 
-    const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}`
+    const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
+    
+    let messageText = 'Вітаю! Хочу уточнити замовлення:'
+    if (selectedProducts.length > 0) {
+      const itemsList = selectedProducts
+        .map((p) => `• ${p.name} — ${cart[p.id]} x ${p.unit} (${p.price * cart[p.id]} ₴)`)
+        .join('\n')
+      messageText = `Вітаю! Хочу зробити замовлення:\n\n${itemsList}\n\nЗагалом: ${total} ₴`
+    }
+
+    const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}&text=${encodeURIComponent(messageText)}`
     const start = Date.now()
 
     window.location.href = viberAppUrl
@@ -79,7 +89,7 @@ export function KFoodSite() {
         }
       }
     }, 1500)
-  }, [])
+  }, [cart, total])
 
   return (
     <div className="min-h-screen bg-background text-foreground">
