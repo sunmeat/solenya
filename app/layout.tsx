@@ -2,14 +2,14 @@ import { Analytics } from '@vercel/analytics/next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import Script from "next/script";
 
 const geist = Geist({ subsets: ['latin', 'cyrillic'], variable: '--font-geist' })
 const geistMono = Geist_Mono({ subsets: ['latin', 'cyrillic'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'У Виктории — корейские соленья в Одессе',
-  description: 'Домашние корейские салаты, кимчи и морепродукты на Черёмушках и Новом рынке в Одессе.',
-  generator: 'v0.app',
+  title: 'У Вікторії — корейські соління в Одесі',
+  description: 'Корейські салати, кімчі та морепродукти на Черьомушках (пʼятниця-неділя) і Північному ринку (понеділок-четвер) в Одесі. Доставка по Одесі, Україні та Європі. Viber: +380968984626.',
   icons: {
     icon: [
       {
@@ -38,16 +38,20 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ru" className="bg-background">
+      <html lang="uk" className="bg-background">
       <body className={`${geist.variable} ${geistMono.variable} antialiased`}>
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+      {children}
+      <Script
+          src="https://elfsightcdn.com/platform.js"
+          strategy="afterInteractive"
+      />
+      {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
-    </html>
+      </html>
   )
 }
