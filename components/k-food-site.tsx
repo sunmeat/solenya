@@ -334,10 +334,10 @@ export function KFoodSite() {
               <div className="mb-10 text-center">
                 <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">TikTok</p>
                 <h2 className="mt-3 font-sans text-3xl font-black tracking-[-0.04em] sm:text-4xl">
-                  Останні відео від Вікторії
+                  Свіжі TikTok-відео від Вікторії
                 </h2>
                 <p className="mt-3 text-sm text-muted-foreground">
-                  Свіжі партії, ринки та кулінарні моменти
+                  Нові соління та кулінарні моменти
                 </p>
               </div>
 
