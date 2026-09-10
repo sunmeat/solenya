@@ -24,23 +24,23 @@ const topTiktokVideos = [
 const categories = ['Всі', 'Овочі', 'Гриби', 'Морепродукти', 'Гострі']
 
 const products = [
-  { id: 1, category: 'Овочі', name: 'Морква по-корейськи', description: 'Хрустка морква, часник, коріандр та гаряча олія.', price: 85, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хіт' },
-  { id: 2, category: 'Овочі', name: 'Баклажани по-корейськи', description: 'Сині баклажани з перцем, зеленню та пряним маринадом.', price: 95, unit: '100 г', image: '/images/eggplant.png', tag: 'Радимо' },
-  { id: 3, category: 'Гострі', name: 'Кімчі', description: 'Пекінська капуста, червоний перець, часник та соєвий соус.', price: 110, unit: '100 г', image: '/images/kimchi.png', tag: 'Гостро' },
-  { id: 4, category: 'Овочі', name: 'Цвітна капуста', description: 'Хрусткі суцвіття у пряно-кислому маринаді.', price: 80, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Свіжа партія' },
-  { id: 5, category: 'Гриби', name: 'Шампіньйони по-корейськи', description: 'Цілі гриби з цибулею, зеленню та ароматною олією.', price: 105, unit: '100 г', image: '/images/eggplant.png', tag: 'Ніжні' },
-  { id: 6, category: 'Морепродукти', name: 'Кальмари по-корейськи', description: 'Ніжна соломка кальмара у пряному перцевому маринаді.', price: 175, unit: '100 г', image: '/images/kimchi.png', tag: 'Морепродукти' },
-  { id: 7, category: 'Овочі', name: 'Пелюстка з буряком', description: 'Капуста, буряк та часник — яскраво, соковито й хрустко.', price: 75, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Класика' },
-  { id: 8, category: 'Гострі', name: 'Огірки по-корейськи', description: 'Свіжі огірки, кунжут та перцева олія.', price: 90, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хрускіт' },
-  { id: 9, category: 'Морепродукти', name: 'Скумбрія по-корейськи', description: 'Соковита скумбрія з морквою, часником та пряною олією.', price: 130, unit: '100 г', image: '/images/kimchi.png', tag: 'Новинка' },
-  { id: 10, category: 'Гриби', name: 'Мариновані опеньки', description: 'Лісові опеньки з часником, кропом та олією.', price: 95, unit: '100 г', image: '/images/eggplant.png', tag: 'Лісові' },
-  { id: 11, category: 'Овочі', name: 'Капуста по-корейськи гостра', description: 'Білокачанна капуста з червоним перцем і часником.', price: 80, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Гостро' },
-  { id: 12, category: 'Гострі', name: 'Перець по-корейськи', description: 'Солодкий перець у гострому маринаді з кунжутом.', price: 90, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Пікантно' },
-  { id: 13, category: 'Морепродукти', name: 'Мідії по-корейськи', description: 'Мідії з морквою, цибулею та соєвим соусом.', price: 165, unit: '100 г', image: '/images/kimchi.png', tag: 'Морепродукти' },
-  { id: 14, category: 'Овочі', name: 'Дайкон по-корейськи', description: 'Хрусткий дайкон з часником та кунжутною олією.', price: 85, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хрумкий' },
-  { id: 15, category: 'Гриби', name: 'Гриби ерингі по-корейськи', description: 'Ерингі з цибулею, соєвим соусом та перцем чилі.', price: 115, unit: '100 г', image: '/images/eggplant.png', tag: 'Соковиті' },
-  { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 100, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
-]
+  { id: 1, category: 'Овочі', name: 'Морква по-корейськи', description: 'Хрустка морква, часник, коріандр та гаряча олія.', price: 35, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хіт' },
+  { id: 2, category: 'Овочі', name: 'Баклажани по-корейськи', description: 'Сині баклажани з перцем, зеленню та пряним маринадом.', price: 45, unit: '100 г', image: '/images/eggplant.png', tag: 'Радимо' },
+  { id: 3, category: 'Гострі', name: 'Кімчі', description: 'Пекінська капуста, червоний перець, часник та соєвий соус.', price: 50, unit: '100 г', image: '/images/kimchi.png', tag: 'Гостро' },
+  { id: 4, category: 'Овочі', name: 'Цвітна капуста', description: 'Хрусткі суцвіття у пряно-кислому маринаді.', price: 40, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Свіжа партія' },
+  { id: 5, category: 'Гриби', name: 'Шампіньйони по-корейськи', description: 'Цілі гриби з цибулею, зеленню та ароматною олією.', price: 55, unit: '100 г', image: '/images/eggplant.png', tag: 'Ніжні' },
+  { id: 6, category: 'Морепродукти', name: 'Кальмари по-корейськи', description: 'Ніжна соломка кальмара у пряному перцевому маринаді.', price: 120, unit: '100 г', image: '/images/kimchi.png', tag: 'Морепродукти' },
+  { id: 7, category: 'Овочі', name: 'Пелюстка з буряком', description: 'Капуста, буряк та часник — яскраво, соковито й хрустко.', price: 30, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Класика' },
+  { id: 8, category: 'Гострі', name: 'Огірки по-корейськи', description: 'Свіжі огірки, кунжут та перцева олія.', price: 40, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хрускіт' },
+  { id: 9, category: 'Морепродукти', name: 'Скумбрія по-корейськи', description: 'Соковита скумбрія з морквою, часником та пряною олією.', price: 90, unit: '100 г', image: '/images/kimchi.png', tag: 'Новинка' },
+  { id: 10, category: 'Гриби', name: 'Мариновані опеньки', description: 'Лісові опеньки з часником, кропом та олією.', price: 50, unit: '100 г', image: '/images/eggplant.png', tag: 'Лісові' },
+  { id: 11, category: 'Овочі', name: 'Капуста по-корейськи гостра', description: 'Білокачанна капуста з червоним перцем і часником.', price: 35, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Гостро' },
+  { id: 12, category: 'Гострі', name: 'Перець по-корейськи', description: 'Солодкий перець у гострому маринаді з кунжутом.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Пікантно' },
+  { id: 13, category: 'Морепродукти', name: 'Мідії по-корейськи', description: 'Мідії з морквою, цибулею та соєвим соусом.', price: 110, unit: '100 г', image: '/images/kimchi.png', tag: 'Морепродукти' },
+  { id: 14, category: 'Овочі', name: 'Дайкон по-корейськи', description: 'Хрусткий дайкон з часником та кунжутною олією.', price: 40, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хрумкий' },
+  { id: 15, category: 'Гриби', name: 'Гриби ерингі по-корейськи', description: 'Ерингі з цибулею, соєвим соусом та перцем чилі.', price: 60, unit: '100 г', image: '/images/eggplant.png', tag: 'Соковиті' },
+  { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
+];
 
 const primaryButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md active:scale-[0.98]'
 const outlineButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]'
@@ -125,9 +125,13 @@ export function KFoodSite() {
             <h1 className="max-w-xl font-sans text-5xl font-black leading-[0.94] tracking-[-0.06em] text-balance sm:text-7xl">
               Корейські
               <br />
-              <span className="text-primary">соління</span>
+              <span className="text-primary">соління:</span>
               <br />
-              з характером.
+              соковито,
+              <br />
+              гостро,
+              <br />
+              смачно!
             </h1>
             <p className="mt-7 max-w-md text-base leading-7 text-muted-foreground">
               Корейські салати, кімчі та свіжі морепродукти по-домашньому. З любов&apos;ю та щедрою ложкою!
