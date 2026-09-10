@@ -183,7 +183,7 @@ export function KFoodSite() {
                 <Star size={14} fill="currentColor" />
               </div>
               <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline">
-                12+K підписників у @u_vicktorii
+                12+K підписників @u_vicktorii
               </a>
             </div>
           </div>
@@ -269,52 +269,86 @@ export function KFoodSite() {
 
         <section id="markets" className="bg-secondary px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
-            <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Забирайте особисто</p>
-            <div className="mt-4 grid gap-6 md:grid-cols-2">
+            <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Забирайте або замовляйте</p>
+            <h2 className="mt-3 font-sans text-3xl font-black tracking-[-0.04em] sm:text-4xl">
+              Де знайти наші соління
+            </h2>
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
               <a
                 href={CHEREMUSHKY_MAP_LINK}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative block overflow-hidden rounded-2xl border border-border bg-card p-7 transition-colors duration-200 hover:border-primary"
+                className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-2xl border border-border bg-card p-7 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg"
               >
                 <div
-                  className="absolute inset-0 bg-cover bg-center opacity-25 transition-opacity duration-300 group-hover:opacity-40"
+                  className="absolute inset-0 bg-cover bg-center opacity-20 transition-opacity duration-300 group-hover:opacity-35"
                   style={{ backgroundImage: `url(${CHEREMUSHKY_MAP_IMAGE})` }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/80 to-card/30" />
-                <div className="relative">
-                  <MapPin className="text-primary" />
-                  <h3 className="mt-8 text-2xl font-black underline-offset-4 group-hover:underline">Черьомушки</h3>
-                  <p className="mt-2 leading-6 text-muted-foreground">
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/85 to-card/40" />
+                <div className="relative flex flex-1 flex-col">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <MapPin size={20} />
+                  </span>
+                  <h3 className="mt-6 text-2xl font-black underline-offset-4 group-hover:underline">Черьомушки</h3>
+                  <p className="mt-2 flex-1 leading-6 text-muted-foreground">
                     Одеса, ринок на Черьомушках
                     <br />
                     Свіжі салати та морепродукти
-                    <br />
-                    П&apos;ятниця, субота, неділя 09:00–17:00
+                  </p>
+                  <p className="mt-4 font-mono text-xs font-bold uppercase tracking-wide text-primary">
+                    Пт, сб, нд · 09:00–17:00
                   </p>
                 </div>
               </a>
+
               <a
                 href={NORTHERN_MARKET_MAP_LINK}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative block overflow-hidden rounded-2xl border border-border bg-card p-7 transition-colors duration-200 hover:border-primary"
+                className="group relative flex min-h-[240px] flex-col overflow-hidden rounded-2xl border border-border bg-card p-7 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg"
               >
                 <div
-                  className="absolute inset-0 bg-cover bg-center opacity-25 transition-opacity duration-300 group-hover:opacity-40"
+                  className="absolute inset-0 bg-cover bg-center opacity-20 transition-opacity duration-300 group-hover:opacity-35"
                   style={{ backgroundImage: `url(${NORTHERN_MARKET_MAP_IMAGE})` }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/80 to-card/30" />
-                <div className="relative">
-                  <MapPin className="text-primary" />
-                  <h3 className="mt-8 text-2xl font-black underline-offset-4 group-hover:underline">Північний ринок</h3>
-                  <p className="mt-2 leading-6 text-muted-foreground">
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/85 to-card/40" />
+                <div className="relative flex flex-1 flex-col">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <MapPin size={20} />
+                  </span>
+                  <h3 className="mt-6 text-2xl font-black underline-offset-4 group-hover:underline">Північний ринок</h3>
+                  <p className="mt-2 flex-1 leading-6 text-muted-foreground">
                     Одеса, Північний ринок
                     <br />
                     Заходьте за соліннями до обіду
-                    <br />
-                    Понеділок – четвер 09:00–18:00
                   </p>
+                  <p className="mt-4 font-mono text-xs font-bold uppercase tracking-wide text-primary">
+                    Пн–чт · 09:00–18:00
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+                onClick={handleViberClick}
+                className="group relative flex min-h-[240px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl bg-[#7360f2] p-7 text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#5d4bd9] hover:shadow-lg"
+              >
+                <div>
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15">
+                    <Phone size={20} />
+                  </span>
+                  <h3 className="mt-6 text-2xl font-black">Доставка</h3>
+                  <p className="mt-2 leading-6 text-white/80">
+                    По Одесі, по всій Україні
+                    <br />
+                    та до Європи
+                  </p>
+                </div>
+                <div className="mt-6">
+                  <p className="font-mono text-base font-bold">{VIBER_PHONE_DISPLAY}</p>
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold underline-offset-4 group-hover:underline">
+                    Написати у Viber <ArrowRight size={15} />
+                  </span>
                 </div>
               </a>
             </div>
