@@ -10,6 +10,31 @@ const geistMono = Geist_Mono({ subsets: ['latin', 'cyrillic'], variable: '--font
 export const metadata: Metadata = {
   title: 'У Вікторії — корейські соління в Одесі',
   description: 'Корейські салати, кімчі та морепродукти на Черьомушках (пʼятниця-неділя) і Північному ринку (понеділок-четвер) в Одесі. Доставка по Одесі, Україні та Європі. Viber: +380968984626.',
+  
+  openGraph: {
+    title: 'У Вікторії — корейські соління в Одесі',
+    description: 'Корейські салати, кімчі та свіжі морепродукти. Доставка по Одесі, Україні та Європі.',
+    url: 'https://uviktorii.vercel.app/',
+    siteName: 'У Вікторії',
+    images: [
+      {
+        url: 'https://uviktorii.vercel.app/preview.png',
+        width: 1200,
+        height: 630,
+        alt: 'Корейські соління У Вікторії',
+      },
+    ],
+    locale: 'uk_UA',
+    type: 'website',
+  },
+  
+  twitter: {
+    card: 'summary_large_image',
+    title: 'У Вікторії — корейські соління в Одесі',
+    description: 'Корейські салати, кімчі та свіжі морепродукти. Доставка по Одесі, Україні та Європі.',
+    images: ['https://uviktorii.vercel.app/preview.png'],
+  },
+
   icons: {
     icon: [
       {
@@ -38,20 +63,20 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({
-                                     children,
-                                   }: Readonly<{
+  children,
+}: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-      <html lang="uk" className="bg-background">
+    <html lang="uk" className="bg-background">
       <body className={`${geist.variable} ${geistMono.variable} antialiased`}>
-      {children}
-      <Script
+        {children}
+        <Script
           src="https://elfsightcdn.com/platform.js"
           strategy="afterInteractive"
-      />
-      {process.env.NODE_ENV === 'production' && <Analytics />}
+        />
+        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
-      </html>
+    </html>
   )
 }
