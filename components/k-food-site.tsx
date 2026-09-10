@@ -83,7 +83,6 @@ const products = [
   { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
 ]
 
-// Популярні позиції для швидкого асорті
 const popularAssortmentIds = [1, 2, 3, 7, 8, 11, 4, 5]
 
 const deliveryOptions = [
@@ -140,7 +139,6 @@ export function KFoodSite() {
   const [cartOpen, setCartOpen] = useState(false)
   const [orderCopied, setOrderCopied] = useState(false)
 
-  // === Стан конструктора асорті ===
   const [assortSize, setAssortSize] = useState<1 | 2 | 3>(1)
   const [selectedAssort, setSelectedAssort] = useState<number[]>([1, 2, 3, 7]) // за замовчуванням популярні
   const [wishes, setWishes] = useState('')
@@ -157,7 +155,6 @@ export function KFoodSite() {
   const remove = (id: number) =>
     setCart((c) => ({ ...c, [id]: Math.max(0, (c[id] ?? 0) - 1) }))
 
-  // Розрахунок орієнтовної ціни асорті
   const assortPrice = useMemo(() => {
     if (selectedAssort.length === 0) return 0
     const avgPricePer100g =
@@ -165,7 +162,7 @@ export function KFoodSite() {
         const p = products.find((pr) => pr.id === id)
         return sum + (p?.price ?? 0)
       }, 0) / selectedAssort.length
-    return Math.round(avgPricePer100g * 10 * assortSize) // 1 кг = 10 × 100 г
+    return Math.round(avgPricePer100g * 10 * assortSize) 
   }, [selectedAssort, assortSize])
 
   const toggleAssortItem = (id: number) => {
@@ -174,11 +171,10 @@ export function KFoodSite() {
     )
   }
 
-  // Додати асорті в кошик (розподіляємо вагу порівну)
   const addAssortmentToCart = () => {
     if (selectedAssort.length === 0) return
 
-    const totalUnits = assortSize * 10 // кг → кількість порцій по 100 г
+    const totalUnits = assortSize * 10 
     const perItem = Math.floor(totalUnits / selectedAssort.length)
     const remainder = totalUnits % selectedAssort.length
 
@@ -195,7 +191,6 @@ export function KFoodSite() {
     setTimeout(() => setAssortAdded(false), 2500)
   }
 
-  /** Формує готовий текст замовлення для Viber / Telegram / копіювання */
   const buildOrderMessage = useCallback(
     (forCopy = false) => {
       const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
@@ -297,7 +292,7 @@ export function KFoodSite() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Sticky header */}
+
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-10">
           <a href="#top" className="font-sans text-2xl font-black tracking-[-0.08em]">
@@ -351,7 +346,7 @@ export function KFoodSite() {
       </header>
 
       <main id="top">
-        {/* Hero */}
+ 
         <section className="mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-10 lg:pb-28 lg:pt-20">
           <div>
             <h1 className="max-w-xl font-sans text-5xl font-black leading-[0.94] tracking-[-0.06em] text-balance sm:text-7xl">
@@ -439,7 +434,6 @@ export function KFoodSite() {
           </a>
         </section>
 
-        {/* Banner */}
         <section className="border-y border-border bg-primary py-5 text-primary-foreground">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-5 font-mono text-xs font-bold uppercase tracking-widest sm:justify-between lg:px-10">
             <span>Вагові соління</span>
@@ -452,7 +446,6 @@ export function KFoodSite() {
           </div>
         </section>
 
-        {/* Menu */}
         <section id="menu" className="mx-auto max-w-7xl px-5 py-20 lg:px-10">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
@@ -522,7 +515,6 @@ export function KFoodSite() {
           </div>
         </section>
 
-        {/* ===== НОВИЙ БЛОК: Швидке оформлення асорті ===== */}
         <section id="assort" className="border-t border-border bg-secondary/30 px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="mb-10">
@@ -541,9 +533,9 @@ export function KFoodSite() {
             </div>
 
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-              {/* Ліва частина — вибір */}
+      
               <div className="space-y-8">
-                {/* Вага */}
+    
                 <div>
                   <p className="mb-3 text-sm font-bold">Вага асорті</p>
                   <div className="flex flex-wrap gap-3">
@@ -563,7 +555,7 @@ export function KFoodSite() {
                   </div>
                 </div>
 
-                {/* Чекбокси популярних */}
+      
                 <div>
                   <p className="mb-3 text-sm font-bold">
                     Що покласти в асорті{' '}
@@ -603,7 +595,7 @@ export function KFoodSite() {
                   </div>
                 </div>
 
-                {/* Побажання */}
+
                 <div>
                   <p className="mb-3 text-sm font-bold">Побажання (необовʼязково)</p>
                   <textarea
@@ -616,7 +608,6 @@ export function KFoodSite() {
                 </div>
               </div>
 
-              {/* Права частина — підсумок */}
               <div className="lg:sticky lg:top-28 h-fit">
                 <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
                   <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
@@ -668,7 +659,6 @@ export function KFoodSite() {
           </div>
         </section>
 
-        {/* Delivery */}
         <section id="delivery" className="border-t border-border bg-secondary/40 px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
@@ -742,7 +732,6 @@ export function KFoodSite() {
           </div>
         </section>
 
-        {/* Markets */}
         <section id="markets" className="px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
@@ -776,7 +765,7 @@ export function KFoodSite() {
                     Свіжі салати та морепродукти
                   </p>
                   <p className="mt-4 font-mono text-xs font-bold uppercase tracking-wide text-primary">
-                    Пт, сб, нд · 09:00–17:00
+                    Пт, сб, нд · 09:00–16:00
                   </p>
                 </div>
               </a>
@@ -804,7 +793,7 @@ export function KFoodSite() {
                     Заходьте за соліннями до обіду
                   </p>
                   <p className="mt-4 font-mono text-xs font-bold uppercase tracking-wide text-primary">
-                    Пн–чт · 09:00–18:00
+                    Кожен день · 08:00–16:00
                   </p>
                 </div>
               </a>
@@ -844,7 +833,6 @@ export function KFoodSite() {
           </div>
         </section>
 
-        {/* About */}
         <section id="about" className="mx-auto grid max-w-7xl gap-8 px-5 py-20 lg:grid-cols-2 lg:px-10">
           <div className="rounded-[2rem] bg-primary p-8 text-primary-foreground sm:p-12">
             <Music2 size={30} />
@@ -906,7 +894,6 @@ export function KFoodSite() {
           </div>
         </section>
 
-        {/* TikTok section */}
         <section className="border-t border-border bg-secondary/40 px-5 py-16 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="mb-10 text-center">
@@ -927,7 +914,6 @@ export function KFoodSite() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-border px-5 py-10 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 text-center text-sm sm:flex-row sm:items-center sm:justify-between sm:text-left">
           <a
@@ -996,7 +982,6 @@ export function KFoodSite() {
         </div>
       </footer>
 
-      {/* Sticky floating buttons */}
       <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
         <button
           onClick={() => setCartOpen(true)}
@@ -1032,7 +1017,6 @@ export function KFoodSite() {
         </a>
       </div>
 
-      {/* Cart Drawer */}
       {cartOpen && (
         <div className="fixed inset-0 z-50 flex items-end justify-end bg-foreground/40 sm:items-stretch">
           <button
