@@ -1,33 +1,78 @@
-# solenya
+# 🌶️ У Вікторії — справжні корейські соління в Одесі
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+**Соковито. Гостро. Смачно. По-домашньому.**
 
-## Built with v0
+Ми — «У Вікторії».  
+Невелика, але дуже улюблена одеська точка з **справжніми корейськими соліннями**, які готують за традиційними рецептами з натуральних інгредієнтів і щедрою рукою.
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+Кожен день свіжа партія.  
+Кожен салат — з характером.  
+Кожна порція — з любов’ю.
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_DwE5BUm4iN021bc67ZWIdu4A0WMb)
+---
 
-## Getting Started
+### Що ми пропонуємо
 
-First, run the development server:
+- **Кімчі** — класичне, гостре, соковите  
+- **Корейська морква** — хрустка, ароматна, ідеально збалансована  
+- **Баклажани по-корейськи** — пряні та насичені  
+- **Цвітна капуста** в гостро-солодкому маринаді  
+- **Спаржа соєва** та інші фірмові позиції  
+- **Асорті на ваш смак** — зберемо саме те, що хочеться прямо зараз  
+- Свіжі морепродукти та домашні маринади
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Усе **вагове**. Без зайвих добавок. Тільки смак і якість.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Де нас знайти
 
-## Learn More
+**Черьомушки**  
+Ринок на Черьомушках  
+Пт, Сб, Нд · 09:00–17:00
 
-To learn more, take a look at the following resources:
+**Північний ринок**  
+Пн–Чт · 09:00–18:00
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+Або просто **замовте доставку** — ми привеземо свіжість прямо до вас.
+
+---
+
+### Доставка
+
+- По всій Одесі  
+- По всій Україні  
+- Навіть до Європи  
+
+Швидко, зручно і з турботою про те, щоб соління доїхали такими ж соковитими, якими їх тільки що приготували.
+
+---
+
+### Як замовити
+
+1. Напишіть Вікторії у **Viber** або **TikTok**  
+2. Скажіть, що хочете сьогодні (або просто «збери мені найсмачніше»)  
+3. Отримайте свіжу порцію щастя
+
+📞 **+380 96 898 46 26**  
+TikTok: [@u_vicktorii](https://www.tiktok.com/@u_vicktorii) (12K+ підписників і 170K+ лайків)
+
+---
+
+### Чому нас обирають
+
+- Готуємо **щодня свіжу партію**  
+- Тільки натуральні інгредієнти  
+- Рецепти, перевірені часом і одеськими гурманами  
+- Можна зібрати персональне асорті  
+- Завжди на зв’язку і завжди готові підказати, що сьогодні найсмачніше
+
+---
+
+**«Домашні маринади та свіжі морепродукти — щодня для Одеси і не тільки».**
+
+Заходьте на ринок, пишіть у месенджер або просто відкрийте сайт і відчуйте справжній корейський смак по-одеськи.
+
+**У Вікторії чекаємо саме на вас.** 🌶️✨
+
+[Перейти на сайт →](https://uviktorii.vercel.app/)
