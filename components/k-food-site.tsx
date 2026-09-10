@@ -1,10 +1,18 @@
 'use client'
 
 import { useMemo, useState, useCallback, MouseEvent } from 'react'
-import { ArrowRight, Check, MapPin, Minus, Music2, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
+import { ArrowRight, Check, ClipboardCopy, MapPin, Minus, Music2, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
 
 const VIBER_PHONE_DISPLAY = '+380 96 898 46 26'
 const VIBER_RAW_NUMBER = '380968984626'
+const SITE_URL = 'https://uviktorii.vercel.app'
+
+const getGreeting = () => {
+  const hour = new Date().getHours()
+  if (hour >= 5 && hour < 12) return 'Доброго ранку, Вікторіє!'
+  if (hour >= 12 && hour < 18) return 'Добрий день, Вікторіє!'
+  return 'Добрий вечір, Вікторіє!'
+}
 const TIKTOK_LINK = 'https://www.tiktok.com/@u_vicktorii'
 const TIKTOK_LINK1 = 'https://www.tiktok.com/@u_vicktorii/video/7640838699357523208'
 const TIKTOK_LINK2 = 'https://www.tiktok.com/@u_vicktorii/video/7575846178714111244'
@@ -15,7 +23,6 @@ const NORTHERN_MARKET_MAP_LINK = `https://www.google.com/maps/search/?api=1&quer
 const CHEREMUSHKY_MAP_IMAGE = 'https://staticmap.openstreetmap.de/staticmap.php?center=46.4360,30.7590&zoom=14&size=600x400&maptype=mapnik&markers=46.4360,30.7590,red-pushpin'
 const NORTHERN_MARKET_MAP_IMAGE = 'https://staticmap.openstreetmap.de/staticmap.php?center=46.4950,30.7100&zoom=14&size=600x400&maptype=mapnik&markers=46.4950,30.7100,red-pushpin'
 
-// Куда предлагать установить Viber, в зависимости от платформы пользователя
 const getViberInstallUrl = () => {
   if (typeof navigator === 'undefined') return 'https://www.viber.com/download/'
   const ua = navigator.userAgent || ''
@@ -26,7 +33,7 @@ const getViberInstallUrl = () => {
   if (/iphone|ipad|ipod/i.test(ua)) {
     return 'https://apps.apple.com/app/viber-messenger/id382617920'
   }
-  // десктоп / прочее — общая страница загрузки
+
   return 'https://www.viber.com/download/'
 }
 
@@ -65,6 +72,7 @@ export function KFoodSite() {
   const [active, setActive] = useState('Всі')
   const [cart, setCart] = useState<Record<number, number>>({})
   const [cartOpen, setCartOpen] = useState(false)
+  const [orderCopied, setOrderCopied] = useState(false)
 
   const filtered = active === 'Всі' ? products : products.filter((p) => p.category === active)
   const totalItems = Object.values(cart).reduce((s, n) => s + n, 0)
@@ -88,8 +96,6 @@ export function KFoodSite() {
 
     const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}&text=${encodeURIComponent(messageText)}`
 
-    // Если Viber открывается, страница уходит из фокуса/скрывается —
-    // это и есть надёжный сигнал, что приложение установлено и запустилось.
     let appLikelyOpened = false
     const markOpened = () => {
       appLikelyOpened = true
@@ -106,7 +112,6 @@ export function KFoodSite() {
       window.removeEventListener('blur', markOpened)
       window.removeEventListener('pagehide', markOpened)
 
-      // Если страница так и не потеряла фокус — Viber, скорее всего, не установлен
       if (!appLikelyOpened && !document.hidden) {
         const wantsInstall = window.confirm(
           'Схоже, додаток Viber не встановлено.\nВстановити Viber зараз?'
@@ -116,6 +121,45 @@ export function KFoodSite() {
         }
       }
     }, 1200)
+  }, [cart, total])
+
+  const handleCopyOrder = useCallback(async () => {
+    const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
+
+    const itemsList = selectedProducts
+      .map((p) => `${p.name} - ${cart[p.id]} x ${p.unit} - ${p.price * cart[p.id]} ₴`)
+      .join('\n')
+
+    const orderText = [
+      getGreeting(),
+      '',
+      `Хочу зробити замовлення з сайту ${SITE_URL}:`,
+      '',
+      itemsList,
+      '',
+      `Загальна вартість: ${total} ₴`,
+      '',
+      "Підкажіть, будь ласка, деталі доставки кур'єром на таку адресу:",
+    ].join('\n')
+
+    try {
+      await navigator.clipboard.writeText(orderText)
+      setOrderCopied(true)
+      setTimeout(() => setOrderCopied(false), 2500)
+    } catch {
+
+      const textarea = document.createElement('textarea')
+      textarea.value = orderText
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.focus()
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+      setOrderCopied(true)
+      setTimeout(() => setOrderCopied(false), 2500)
+    }
   }, [cart, total])
 
   return (
@@ -183,7 +227,7 @@ export function KFoodSite() {
                 <Star size={14} fill="currentColor" />
               </div>
               <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline">
-                12+K підписників @u_vicktorii
+                12K+ підписників у @u_vicktorii
               </a>
             </div>
           </div>
@@ -513,7 +557,26 @@ export function KFoodSite() {
                 <span>{total} ₴</span>
               </div>
 
-              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#7360f2] py-4 font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]">
+              <button
+                onClick={handleCopyOrder}
+                disabled={totalItems === 0}
+                className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-border disabled:hover:bg-transparent disabled:hover:text-inherit"
+              >
+                {orderCopied ? (
+                  <>
+                    <Check size={16} /> Скопійовано!
+                  </>
+                ) : (
+                  <>
+                    <ClipboardCopy size={16} /> Скопіювати список замовлення
+                  </>
+                )}
+              </button>
+              <p className="mt-2 text-center text-xs text-muted-foreground">
+                Вставте скопійований текст у Viber або TikTok
+              </p>
+
+              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#7360f2] py-4 font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]">
                 <Check size={18} /> Уточнити замовлення у Viber
               </a>
 
