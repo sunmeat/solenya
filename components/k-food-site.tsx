@@ -1,5 +1,4 @@
 'use client'
-
 import { useMemo, useState, useCallback, MouseEvent } from 'react'
 import {
   ArrowRight,
@@ -84,6 +83,9 @@ const products = [
   { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
 ]
 
+// Популярні позиції для швидкого асорті
+const popularAssortmentIds = [1, 2, 3, 7, 8, 11, 4, 5]
+
 const deliveryOptions = [
   {
     icon: Truck,
@@ -138,6 +140,12 @@ export function KFoodSite() {
   const [cartOpen, setCartOpen] = useState(false)
   const [orderCopied, setOrderCopied] = useState(false)
 
+  // === Стан конструктора асорті ===
+  const [assortSize, setAssortSize] = useState<1 | 2 | 3>(1)
+  const [selectedAssort, setSelectedAssort] = useState<number[]>([1, 2, 3, 7]) // за замовчуванням популярні
+  const [wishes, setWishes] = useState('')
+  const [assortAdded, setAssortAdded] = useState(false)
+
   const filtered = active === 'Всі' ? products : products.filter((p) => p.category === active)
   const totalItems = Object.values(cart).reduce((s, n) => s + n, 0)
   const total = useMemo(
@@ -149,23 +157,61 @@ export function KFoodSite() {
   const remove = (id: number) =>
     setCart((c) => ({ ...c, [id]: Math.max(0, (c[id] ?? 0) - 1) }))
 
+  // Розрахунок орієнтовної ціни асорті
+  const assortPrice = useMemo(() => {
+    if (selectedAssort.length === 0) return 0
+    const avgPricePer100g =
+      selectedAssort.reduce((sum, id) => {
+        const p = products.find((pr) => pr.id === id)
+        return sum + (p?.price ?? 0)
+      }, 0) / selectedAssort.length
+    return Math.round(avgPricePer100g * 10 * assortSize) // 1 кг = 10 × 100 г
+  }, [selectedAssort, assortSize])
+
+  const toggleAssortItem = (id: number) => {
+    setSelectedAssort((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    )
+  }
+
+  // Додати асорті в кошик (розподіляємо вагу порівну)
+  const addAssortmentToCart = () => {
+    if (selectedAssort.length === 0) return
+
+    const totalUnits = assortSize * 10 // кг → кількість порцій по 100 г
+    const perItem = Math.floor(totalUnits / selectedAssort.length)
+    const remainder = totalUnits % selectedAssort.length
+
+    setCart((prev) => {
+      const next = { ...prev }
+      selectedAssort.forEach((id, index) => {
+        const qty = perItem + (index < remainder ? 1 : 0)
+        next[id] = (next[id] ?? 0) + qty
+      })
+      return next
+    })
+
+    setAssortAdded(true)
+    setTimeout(() => setAssortAdded(false), 2500)
+  }
+
   /** Формує готовий текст замовлення для Viber / Telegram / копіювання */
   const buildOrderMessage = useCallback(
     (forCopy = false) => {
       const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
-
       if (selectedProducts.length === 0) {
         return forCopy
           ? `${getGreeting()}\n\nХочу уточнити асортимент / зробити замовлення з сайту ${SITE_URL}`
           : 'Вітаю! Хочу уточнити замовлення / асортимент'
       }
-
       const itemsList = selectedProducts
         .map(
           (p) =>
             `• ${p.name} — ${cart[p.id]} × ${p.unit} (${p.price * (cart[p.id] ?? 0)} ₴)`
         )
         .join('\n')
+
+      const wishesText = wishes.trim() ? `\n\nПобажання: ${wishes.trim()}` : ''
 
       if (forCopy) {
         return [
@@ -176,14 +222,14 @@ export function KFoodSite() {
           itemsList,
           '',
           `Загальна вартість: ${total} ₴`,
+          wishesText,
           '',
           "Підкажіть, будь ласка, деталі доставки кур'єром на таку адресу:",
         ].join('\n')
       }
-
-      return `Вітаю! Хочу зробити замовлення:\n\n${itemsList}\n\nЗагалом: ${total} ₴`
+      return `Вітаю! Хочу зробити замовлення:\n\n${itemsList}\n\nЗагалом: ${total} ₴${wishesText}`
     },
-    [cart, total]
+    [cart, total, wishes]
   )
 
   const handleViberClick = useCallback(
@@ -193,23 +239,18 @@ export function KFoodSite() {
       const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}&text=${encodeURIComponent(
         messageText
       )}`
-
       let appLikelyOpened = false
       const markOpened = () => {
         appLikelyOpened = true
       }
-
       document.addEventListener('visibilitychange', markOpened)
       window.addEventListener('blur', markOpened)
       window.addEventListener('pagehide', markOpened)
-
       window.location.href = viberAppUrl
-
       setTimeout(() => {
         document.removeEventListener('visibilitychange', markOpened)
         window.removeEventListener('blur', markOpened)
         window.removeEventListener('pagehide', markOpened)
-
         if (!appLikelyOpened && !document.hidden) {
           const wantsInstall = window.confirm(
             'Схоже, додаток Viber не встановлено.\nВстановити Viber зараз?'
@@ -227,12 +268,7 @@ export function KFoodSite() {
     (e: MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault()
       const messageText = buildOrderMessage(false)
-
-      // Офіційний формат з підтримкою prefilled text (core.telegram.org)
       const tgUrl = `https://t.me/+${VIBER_RAW_NUMBER}?text=${encodeURIComponent(messageText)}`
-      // Альтернатива для нативного додатку:
-      // const tgUrl = `tg://resolve?phone=${VIBER_RAW_NUMBER}&text=${encodeURIComponent(messageText)}`
-
       window.open(tgUrl, '_blank')
     },
     [buildOrderMessage]
@@ -240,7 +276,6 @@ export function KFoodSite() {
 
   const handleCopyOrder = useCallback(async () => {
     const orderText = buildOrderMessage(true)
-
     try {
       await navigator.clipboard.writeText(orderText)
       setOrderCopied(true)
@@ -268,10 +303,12 @@ export function KFoodSite() {
           <a href="#top" className="font-sans text-2xl font-black tracking-[-0.08em]">
             У <span className="text-primary">Вікторії</span>
           </a>
-
           <nav className="hidden items-center gap-7 text-sm font-semibold md:flex">
             <a href="#menu" className="transition-colors duration-200 hover:text-primary">
               Асортимент
+            </a>
+            <a href="#assort" className="transition-colors duration-200 hover:text-primary">
+              Зібрати асорті
             </a>
             <a href="#delivery" className="transition-colors duration-200 hover:text-primary">
               Доставка і оплата
@@ -283,9 +320,7 @@ export function KFoodSite() {
               Про нас
             </a>
           </nav>
-
           <div className="flex items-center gap-2">
-            {/* Viber в хедері (завжди видно) */}
             <a
               href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
               onClick={handleViberClick}
@@ -295,8 +330,6 @@ export function KFoodSite() {
               <Phone size={14} />
               <span className="hidden lg:inline">Viber</span>
             </a>
-
-            {/* Telegram в хедері */}
             <a
               href={`https://t.me/+${VIBER_RAW_NUMBER}`}
               onClick={handleTelegramClick}
@@ -306,7 +339,6 @@ export function KFoodSite() {
               <MessageCircle size={14} />
               <span className="hidden lg:inline">Telegram</span>
             </a>
-
             <button
               onClick={() => setCartOpen(true)}
               className="flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
@@ -359,7 +391,6 @@ export function KFoodSite() {
                 <MessageCircle size={16} /> Telegram
               </a>
             </div>
-
             <div className="mt-9 flex items-center gap-3 text-sm">
               <div className="flex gap-1 text-primary">
                 <Star size={14} fill="currentColor" />
@@ -377,19 +408,17 @@ export function KFoodSite() {
                 12K+ підписників @u_vicktorii
               </a>
             </div>
-
             <a
               href="#delivery"
               className="mt-6 flex max-w-md items-center gap-4 rounded-2xl border border-border px-5 py-4 text-sm transition-colors duration-200 hover:border-primary hover:bg-secondary"
             >
               <Truck size={20} className="shrink-0 text-primary" />
               <span>
-               Доставка: мін. замовлення від <b>300 ₴</b>, по Одесі — від <b>70 ₴</b>, безкоштовно від 700 ₴.{' '}
+                Доставка: мін. замовлення від <b>300 ₴</b>, по Одесі — від <b>70 ₴</b>, безкоштовно від 700 ₴.{' '}
                 <span className="font-bold text-primary">Умови доставки →</span>
               </span>
             </a>
           </div>
-
           <a href="#menu" className="group relative block">
             <div className="aspect-[1.05] overflow-hidden rounded-[2rem] bg-secondary">
               <img
@@ -455,7 +484,6 @@ export function KFoodSite() {
               ))}
             </div>
           </div>
-
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {filtered.map((p) => (
               <article
@@ -494,6 +522,152 @@ export function KFoodSite() {
           </div>
         </section>
 
+        {/* ===== НОВИЙ БЛОК: Швидке оформлення асорті ===== */}
+        <section id="assort" className="border-t border-border bg-secondary/30 px-5 py-20 lg:px-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10">
+              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                Конструктор
+              </p>
+              <h2 className="mt-3 font-sans text-4xl font-black tracking-[-0.05em] sm:text-5xl">
+                Швидке оформлення
+                <br />
+                асорті
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+                Оберіть вагу, відмітьте улюблені позиції — ми рівномірно розподілимо вагу між ними.
+                Можна додати побажання (більше гострого, менше часнику тощо).
+              </p>
+            </div>
+
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              {/* Ліва частина — вибір */}
+              <div className="space-y-8">
+                {/* Вага */}
+                <div>
+                  <p className="mb-3 text-sm font-bold">Вага асорті</p>
+                  <div className="flex flex-wrap gap-3">
+                    {([1, 2, 3] as const).map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setAssortSize(size)}
+                        className={`rounded-full px-6 py-3 text-sm font-bold transition-all cursor-pointer ${
+                          assortSize === size
+                            ? 'bg-primary text-primary-foreground shadow-md'
+                            : 'border border-border bg-card hover:border-primary hover:bg-secondary'
+                        }`}
+                      >
+                        {size} кг
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Чекбокси популярних */}
+                <div>
+                  <p className="mb-3 text-sm font-bold">
+                    Що покласти в асорті{' '}
+                    <span className="font-normal text-muted-foreground">
+                      (обрано {selectedAssort.length})
+                    </span>
+                  </p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {products
+                      .filter((p) => popularAssortmentIds.includes(p.id))
+                      .map((p) => {
+                        const checked = selectedAssort.includes(p.id)
+                        return (
+                          <label
+                            key={p.id}
+                            className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-all ${
+                              checked
+                                ? 'border-primary bg-primary/5'
+                                : 'border-border bg-card hover:border-primary/50'
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => toggleAssortItem(p.id)}
+                              className="h-4 w-4 accent-primary"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold leading-tight truncate">{p.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {p.price} ₴ / 100 г
+                              </p>
+                            </div>
+                          </label>
+                        )
+                      })}
+                  </div>
+                </div>
+
+                {/* Побажання */}
+                <div>
+                  <p className="mb-3 text-sm font-bold">Побажання (необовʼязково)</p>
+                  <textarea
+                    value={wishes}
+                    onChange={(e) => setWishes(e.target.value)}
+                    placeholder="Наприклад: більше гострого, менше часнику, без цибулі..."
+                    rows={3}
+                    className="w-full resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              {/* Права частина — підсумок */}
+              <div className="lg:sticky lg:top-28 h-fit">
+                <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                  <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                    Ваше асорті
+                  </p>
+                  <p className="mt-2 text-3xl font-black">
+                    {assortSize} кг
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {selectedAssort.length > 0
+                      ? `≈ ${Math.round((assortSize * 1000) / selectedAssort.length)} г кожної позиції`
+                      : 'Оберіть хоча б одну позицію'}
+                  </p>
+
+                  <div className="my-5 border-t border-border" />
+
+                  <div className="flex items-end justify-between">
+                    <span className="text-sm text-muted-foreground">Орієнтовно</span>
+                    <span className="text-2xl font-black text-primary">
+                      {assortPrice > 0 ? `${assortPrice} ₴` : '—'}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Точну вартість підтвердить Вікторія
+                  </p>
+
+                  <button
+                    onClick={addAssortmentToCart}
+                    disabled={selectedAssort.length === 0}
+                    className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {assortAdded ? (
+                      <>
+                        <Check size={18} /> Додано в кошик!
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag size={18} /> Додати асорті в кошик
+                      </>
+                    )}
+                  </button>
+
+                  <p className="mt-3 text-center text-xs text-muted-foreground">
+                    Після додавання можете відредагувати кількість у кошику
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Delivery */}
         <section id="delivery" className="border-t border-border bg-secondary/40 px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
@@ -513,7 +687,6 @@ export function KFoodSite() {
                 Європу, або самовивіз просто з ринку.
               </p>
             </div>
-
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {deliveryOptions.map((d) => (
                 <div key={d.zone} className="flex flex-col rounded-2xl border border-border bg-card p-6">
@@ -544,7 +717,6 @@ export function KFoodSite() {
                 </div>
               ))}
             </div>
-
             <div className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center">
               <p className="text-sm leading-6 text-muted-foreground">
                 Точну вартість доставки та строки для вашого міста Вікторія підкаже особисто у
@@ -579,7 +751,6 @@ export function KFoodSite() {
             <h2 className="mt-3 font-sans text-3xl font-black tracking-[-0.04em] sm:text-4xl">
               Де знайти наші соління
             </h2>
-
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <a
                 href={CHEREMUSHKY_MAP_LINK}
@@ -609,7 +780,6 @@ export function KFoodSite() {
                   </p>
                 </div>
               </a>
-
               <a
                 href={NORTHERN_MARKET_MAP_LINK}
                 target="_blank"
@@ -638,7 +808,6 @@ export function KFoodSite() {
                   </p>
                 </div>
               </a>
-
               <div className="group relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#7360f2] to-[#229ED9] p-7 text-white shadow-sm">
                 <div>
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15">
@@ -702,7 +871,6 @@ export function KFoodSite() {
               ))}
             </div>
           </div>
-
           <div className="flex flex-col justify-center rounded-[2rem] border border-border p-8 sm:p-12">
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
               На зв&apos;язку
@@ -828,9 +996,8 @@ export function KFoodSite() {
         </div>
       </footer>
 
-      {/* ===== STICKY FLOATING BUTTONS (завжди видимі) ===== */}
+      {/* Sticky floating buttons */}
       <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
-        {/* Кошик (показується завжди, але з кількістю коли є товари) */}
         <button
           onClick={() => setCartOpen(true)}
           className="flex cursor-pointer items-center gap-3 rounded-full bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground shadow-2xl transition-all duration-200 hover:bg-primary/90 active:scale-95"
@@ -845,8 +1012,6 @@ export function KFoodSite() {
             <span>Кошик</span>
           )}
         </button>
-
-        {/* Viber sticky */}
         <a
           href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
           onClick={handleViberClick}
@@ -856,8 +1021,6 @@ export function KFoodSite() {
           <Phone size={18} />
           <span className="hidden sm:inline">Viber</span>
         </a>
-
-        {/* Telegram sticky */}
         <a
           href={`https://t.me/+${VIBER_RAW_NUMBER}`}
           onClick={handleTelegramClick}
@@ -888,7 +1051,6 @@ export function KFoodSite() {
                 <X />
               </button>
             </div>
-
             <div className="flex-1 overflow-y-auto py-6">
               {totalItems === 0 && (
                 <p className="text-sm text-muted-foreground">
@@ -928,20 +1090,17 @@ export function KFoodSite() {
                   </div>
                 ))}
             </div>
-
             <div className="border-t border-border pt-5">
               <div className="flex justify-between text-lg font-black">
                 <span>Разом</span>
                 <span>{total} ₴</span>
               </div>
-
               {totalItems > 0 && total < 300 && (
                 <p className="mt-2 text-xs text-muted-foreground">
                   Мінімальне замовлення для доставки — 300 ₴. Додайте ще на {300 - total} ₴ або
                   оберіть самовивіз.
                 </p>
               )}
-
               <button
                 onClick={handleCopyOrder}
                 disabled={totalItems === 0}
@@ -960,7 +1119,6 @@ export function KFoodSite() {
               <p className="mt-2 text-center text-xs text-muted-foreground">
                 Вставте скопійований текст у Viber або Telegram
               </p>
-
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <a
                   href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
@@ -977,7 +1135,6 @@ export function KFoodSite() {
                   <MessageCircle size={16} /> Telegram
                 </a>
               </div>
-
               <a
                 href={TIKTOK_LINK}
                 target="_blank"
