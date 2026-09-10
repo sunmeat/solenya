@@ -374,7 +374,7 @@ export function KFoodSite() {
                 rel="noreferrer"
                 className="text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline"
               >
-                12K+ підписників у @u_vicktorii
+                12K+ підписників @u_vicktorii
               </a>
             </div>
 
@@ -384,7 +384,7 @@ export function KFoodSite() {
             >
               <Truck size={20} className="shrink-0 text-primary" />
               <span>
-                Мін. замовлення від <b>300 ₴</b>, по Одесі — від <b>70 ₴</b>, безкоштовно від 700 ₴.{' '}
+               Доставка: мін. замовлення від <b>300 ₴</b>, по Одесі — від <b>70 ₴</b>, безкоштовно від 700 ₴.{' '}
                 <span className="font-bold text-primary">Умови доставки →</span>
               </span>
             </a>
