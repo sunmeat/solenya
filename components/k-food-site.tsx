@@ -365,7 +365,7 @@ export function KFoodSite() {
                 <div className="flex flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-base font-black leading-tight">{p.name}</h3>
-                    <span className="whitespace-nowrap font-mono text-sm font-bold">{p.price}₴ / {p.unit}</span>
+                    <span className="whitespace-nowrap font-mono text-sm font-bold">{p.price} грн. / {p.unit}</span>
                   </div>
                   <p className="mt-2 flex-1 text-sm leading-5 text-muted-foreground">{p.description}</p>
                   <button
