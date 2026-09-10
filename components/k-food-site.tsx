@@ -8,6 +8,7 @@ import {
   ClipboardCopy,
   Clock,
   MapPin,
+  MessageCircle,
   Minus,
   Music2,
   Package,
@@ -30,6 +31,7 @@ const getGreeting = () => {
   if (hour >= 12 && hour < 18) return 'Добрий день, Вікторіє!'
   return 'Добрий вечір, Вікторіє!'
 }
+
 const TIKTOK_LINK = 'https://www.tiktok.com/@u_vicktorii'
 const TIKTOK_LINK1 = 'https://www.tiktok.com/@u_vicktorii/video/7640838699357523208'
 const TIKTOK_LINK2 = 'https://www.tiktok.com/@u_vicktorii/video/7575846178714111244'
@@ -37,20 +39,21 @@ const TIKTOK_LINK3 = 'https://www.tiktok.com/@u_vicktorii/video/7646693130430975
 
 const CHEREMUSHKY_MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Ринок Черьомушки, Одеса')}`
 const NORTHERN_MARKET_MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Північний ринок, Одеса')}`
-const CHEREMUSHKY_MAP_IMAGE = 'https://staticmap.openstreetmap.de/staticmap.php?center=46.4360,30.7590&zoom=14&size=600x400&maptype=mapnik&markers=46.4360,30.7590,red-pushpin'
-const NORTHERN_MARKET_MAP_IMAGE = 'https://staticmap.openstreetmap.de/staticmap.php?center=46.4950,30.7100&zoom=14&size=600x400&maptype=mapnik&markers=46.4950,30.7100,red-pushpin'
+
+const CHEREMUSHKY_MAP_IMAGE =
+  'https://staticmap.openstreetmap.de/staticmap.php?center=46.4360,30.7590&zoom=14&size=600x400&maptype=mapnik&markers=46.4360,30.7590,red-pushpin'
+const NORTHERN_MARKET_MAP_IMAGE =
+  'https://staticmap.openstreetmap.de/staticmap.php?center=46.4950,30.7100&zoom=14&size=600x400&maptype=mapnik&markers=46.4950,30.7100,red-pushpin'
 
 const getViberInstallUrl = () => {
   if (typeof navigator === 'undefined') return 'https://www.viber.com/download/'
   const ua = navigator.userAgent || ''
-
   if (/android/i.test(ua)) {
     return 'https://play.google.com/store/apps/details?id=com.viber.voip'
   }
   if (/iphone|ipad|ipod/i.test(ua)) {
     return 'https://apps.apple.com/app/viber-messenger/id382617920'
   }
-
   return 'https://www.viber.com/download/'
 }
 
@@ -79,7 +82,7 @@ const products = [
   { id: 14, category: 'Овочі', name: 'Дайкон по-корейськи', description: 'Хрусткий дайкон з часником та кунжутною олією.', price: 40, unit: '100 г', image: '/images/korean-carrot.png', tag: 'Хрумкий' },
   { id: 15, category: 'Гриби', name: 'Гриби ерингі по-корейськи', description: 'Ерингі з цибулею, соєвим соусом та перцем чилі.', price: 60, unit: '100 г', image: '/images/eggplant.png', tag: 'Соковиті' },
   { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
-];
+]
 
 const deliveryOptions = [
   {
@@ -120,9 +123,14 @@ const deliveryOptions = [
   },
 ]
 
-const primaryButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md active:scale-[0.98]'
-const outlineButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]'
-const viberButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#7360f2] px-6 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]'
+const primaryButton =
+  'inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md active:scale-[0.98]'
+const outlineButton =
+  'inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]'
+const viberButton =
+  'inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#7360f2] px-6 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]'
+const telegramButton =
+  'inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#229ED9] px-6 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#1b8bc4] hover:shadow-md active:scale-[0.98]'
 
 export function KFoodSite() {
   const [active, setActive] = useState('Всі')
@@ -132,78 +140,112 @@ export function KFoodSite() {
 
   const filtered = active === 'Всі' ? products : products.filter((p) => p.category === active)
   const totalItems = Object.values(cart).reduce((s, n) => s + n, 0)
-  const total = useMemo(() => products.reduce((s, p) => s + p.price * (cart[p.id] ?? 0), 0), [cart])
+  const total = useMemo(
+    () => products.reduce((s, p) => s + p.price * (cart[p.id] ?? 0), 0),
+    [cart]
+  )
 
   const add = (id: number) => setCart((c) => ({ ...c, [id]: (c[id] ?? 0) + 1 }))
-  const remove = (id: number) => setCart((c) => ({ ...c, [id]: Math.max(0, (c[id] ?? 0) - 1) }))
+  const remove = (id: number) =>
+    setCart((c) => ({ ...c, [id]: Math.max(0, (c[id] ?? 0) - 1) }))
 
-  const handleViberClick = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
+  /** Формує готовий текст замовлення для Viber / Telegram / копіювання */
+  const buildOrderMessage = useCallback(
+    (forCopy = false) => {
+      const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
 
-    const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
-
-    let messageText = 'Вітаю! Хочу уточнити замовлення:'
-    if (selectedProducts.length > 0) {
-      const itemsList = selectedProducts
-        .map((p) => `• ${p.name} — ${cart[p.id]} x ${p.unit} (${p.price * cart[p.id]} ₴)`)
-        .join('\n')
-      messageText = `Вітаю! Хочу зробити замовлення:\n\n${itemsList}\n\nЗагалом: ${total} ₴`
-    }
-
-    const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}&text=${encodeURIComponent(messageText)}`
-
-    let appLikelyOpened = false
-    const markOpened = () => {
-      appLikelyOpened = true
-    }
-
-    document.addEventListener('visibilitychange', markOpened)
-    window.addEventListener('blur', markOpened)
-    window.addEventListener('pagehide', markOpened)
-
-    window.location.href = viberAppUrl
-
-    setTimeout(() => {
-      document.removeEventListener('visibilitychange', markOpened)
-      window.removeEventListener('blur', markOpened)
-      window.removeEventListener('pagehide', markOpened)
-
-      if (!appLikelyOpened && !document.hidden) {
-        const wantsInstall = window.confirm(
-          'Схоже, додаток Viber не встановлено.\nВстановити Viber зараз?'
-        )
-        if (wantsInstall) {
-          window.open(getViberInstallUrl(), '_blank')
-        }
+      if (selectedProducts.length === 0) {
+        return forCopy
+          ? `${getGreeting()}\n\nХочу уточнити асортимент / зробити замовлення з сайту ${SITE_URL}`
+          : 'Вітаю! Хочу уточнити замовлення / асортимент'
       }
-    }, 1200)
-  }, [cart, total])
+
+      const itemsList = selectedProducts
+        .map(
+          (p) =>
+            `• ${p.name} — ${cart[p.id]} × ${p.unit} (${p.price * (cart[p.id] ?? 0)} ₴)`
+        )
+        .join('\n')
+
+      if (forCopy) {
+        return [
+          getGreeting(),
+          '',
+          `Хочу зробити замовлення з сайту ${SITE_URL}:`,
+          '',
+          itemsList,
+          '',
+          `Загальна вартість: ${total} ₴`,
+          '',
+          "Підкажіть, будь ласка, деталі доставки кур'єром на таку адресу:",
+        ].join('\n')
+      }
+
+      return `Вітаю! Хочу зробити замовлення:\n\n${itemsList}\n\nЗагалом: ${total} ₴`
+    },
+    [cart, total]
+  )
+
+  const handleViberClick = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault()
+      const messageText = buildOrderMessage(false)
+      const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}&text=${encodeURIComponent(
+        messageText
+      )}`
+
+      let appLikelyOpened = false
+      const markOpened = () => {
+        appLikelyOpened = true
+      }
+
+      document.addEventListener('visibilitychange', markOpened)
+      window.addEventListener('blur', markOpened)
+      window.addEventListener('pagehide', markOpened)
+
+      window.location.href = viberAppUrl
+
+      setTimeout(() => {
+        document.removeEventListener('visibilitychange', markOpened)
+        window.removeEventListener('blur', markOpened)
+        window.removeEventListener('pagehide', markOpened)
+
+        if (!appLikelyOpened && !document.hidden) {
+          const wantsInstall = window.confirm(
+            'Схоже, додаток Viber не встановлено.\nВстановити Viber зараз?'
+          )
+          if (wantsInstall) {
+            window.open(getViberInstallUrl(), '_blank')
+          }
+        }
+      }, 1200)
+    },
+    [buildOrderMessage]
+  )
+
+  const handleTelegramClick = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault()
+      const messageText = buildOrderMessage(false)
+
+      // Офіційний формат з підтримкою prefilled text (core.telegram.org)
+      const tgUrl = `https://t.me/+${VIBER_RAW_NUMBER}?text=${encodeURIComponent(messageText)}`
+      // Альтернатива для нативного додатку:
+      // const tgUrl = `tg://resolve?phone=${VIBER_RAW_NUMBER}&text=${encodeURIComponent(messageText)}`
+
+      window.open(tgUrl, '_blank')
+    },
+    [buildOrderMessage]
+  )
 
   const handleCopyOrder = useCallback(async () => {
-    const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
-
-    const itemsList = selectedProducts
-      .map((p) => `${p.name} - ${cart[p.id]} x ${p.unit} - ${p.price * cart[p.id]} ₴`)
-      .join('\n')
-
-    const orderText = [
-      getGreeting(),
-      '',
-      `Хочу зробити замовлення з сайту ${SITE_URL}:`,
-      '',
-      itemsList,
-      '',
-      `Загальна вартість: ${total} ₴`,
-      '',
-      "Підкажіть, будь ласка, деталі доставки кур'єром на таку адресу:",
-    ].join('\n')
+    const orderText = buildOrderMessage(true)
 
     try {
       await navigator.clipboard.writeText(orderText)
       setOrderCopied(true)
       setTimeout(() => setOrderCopied(false), 2500)
     } catch {
-
       const textarea = document.createElement('textarea')
       textarea.value = orderText
       textarea.style.position = 'fixed'
@@ -216,15 +258,17 @@ export function KFoodSite() {
       setOrderCopied(true)
       setTimeout(() => setOrderCopied(false), 2500)
     }
-  }, [cart, total])
+  }, [buildOrderMessage])
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Sticky header */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-10">
           <a href="#top" className="font-sans text-2xl font-black tracking-[-0.08em]">
             У <span className="text-primary">Вікторії</span>
           </a>
+
           <nav className="hidden items-center gap-7 text-sm font-semibold md:flex">
             <a href="#menu" className="transition-colors duration-200 hover:text-primary">
               Асортимент
@@ -239,17 +283,43 @@ export function KFoodSite() {
               Про нас
             </a>
           </nav>
-          <button
-            onClick={() => setCartOpen(true)}
-            className="flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
-            aria-label="Відкрити кошик"
-          >
-            <ShoppingBag size={16} /> Кошик {totalItems > 0 && `(${totalItems})`}
-          </button>
+
+          <div className="flex items-center gap-2">
+            {/* Viber в хедері (завжди видно) */}
+            <a
+              href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+              onClick={handleViberClick}
+              className="hidden sm:inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-[#7360f2] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#5d4bd9]"
+              aria-label="Написати у Viber"
+            >
+              <Phone size={14} />
+              <span className="hidden lg:inline">Viber</span>
+            </a>
+
+            {/* Telegram в хедері */}
+            <a
+              href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+              onClick={handleTelegramClick}
+              className="hidden sm:inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-[#229ED9] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#1b8bc4]"
+              aria-label="Написати у Telegram"
+            >
+              <MessageCircle size={14} />
+              <span className="hidden lg:inline">Telegram</span>
+            </a>
+
+            <button
+              onClick={() => setCartOpen(true)}
+              className="flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
+              aria-label="Відкрити кошик"
+            >
+              <ShoppingBag size={16} /> Кошик {totalItems > 0 && `(${totalItems})`}
+            </button>
+          </div>
         </div>
       </header>
 
       <main id="top">
+        {/* Hero */}
         <section className="mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-10 lg:pb-28 lg:pt-20">
           <div>
             <h1 className="max-w-xl font-sans text-5xl font-black leading-[0.94] tracking-[-0.06em] text-balance sm:text-7xl">
@@ -264,7 +334,8 @@ export function KFoodSite() {
               смачно!
             </h1>
             <p className="mt-7 max-w-md text-base leading-7 text-muted-foreground">
-              Корейські салати, кімчі та свіжі морепродукти по-домашньому. З любов&apos;ю та щедрою ложкою!
+              Корейські салати, кімчі та свіжі морепродукти по-домашньому. З любов&apos;ю та щедрою
+              ложкою!
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#menu" className={primaryButton}>
@@ -273,10 +344,22 @@ export function KFoodSite() {
               <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className={outlineButton}>
                 Дивитись TikTok
               </a>
-              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className={viberButton}>
-                <Phone size={16} /> Замовлення у Viber: {VIBER_PHONE_DISPLAY}
+              <a
+                href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+                onClick={handleViberClick}
+                className={viberButton}
+              >
+                <Phone size={16} /> Замовлення у Viber
+              </a>
+              <a
+                href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+                onClick={handleTelegramClick}
+                className={telegramButton}
+              >
+                <MessageCircle size={16} /> Telegram
               </a>
             </div>
+
             <div className="mt-9 flex items-center gap-3 text-sm">
               <div className="flex gap-1 text-primary">
                 <Star size={14} fill="currentColor" />
@@ -285,10 +368,16 @@ export function KFoodSite() {
                 <Star size={14} fill="currentColor" />
                 <Star size={14} fill="currentColor" />
               </div>
-              <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline">
+              <a
+                href={TIKTOK_LINK}
+                target="_blank"
+                rel="noreferrer"
+                className="text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline"
+              >
                 12K+ підписників у @u_vicktorii
               </a>
             </div>
+
             <a
               href="#delivery"
               className="mt-6 flex max-w-md items-center gap-4 rounded-2xl border border-border px-5 py-4 text-sm transition-colors duration-200 hover:border-primary hover:bg-secondary"
@@ -300,6 +389,7 @@ export function KFoodSite() {
               </span>
             </a>
           </div>
+
           <a href="#menu" className="group relative block">
             <div className="aspect-[1.05] overflow-hidden rounded-[2rem] bg-secondary">
               <img
@@ -309,7 +399,9 @@ export function KFoodSite() {
               />
             </div>
             <div className="absolute -bottom-5 -left-3 rounded-2xl bg-card p-4 shadow-xl transition-colors duration-200 group-hover:bg-secondary sm:-left-6">
-              <p className="font-mono text-xs font-bold uppercase text-muted-foreground">Сьогодні на вітрині</p>
+              <p className="font-mono text-xs font-bold uppercase text-muted-foreground">
+                Сьогодні на вітрині
+              </p>
               <p className="mt-1 text-lg font-black">свіжа партія</p>
             </div>
             <div className="absolute -right-2 top-6 rounded-full bg-accent px-4 py-3 font-mono text-xs font-black uppercase tracking-wider sm:-right-5">
@@ -318,6 +410,7 @@ export function KFoodSite() {
           </a>
         </section>
 
+        {/* Banner */}
         <section className="border-y border-border bg-primary py-5 text-primary-foreground">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-5 font-mono text-xs font-bold uppercase tracking-widest sm:justify-between lg:px-10">
             <span>Вагові соління</span>
@@ -330,16 +423,21 @@ export function KFoodSite() {
           </div>
         </section>
 
+        {/* Menu */}
         <section id="menu" className="mx-auto max-w-7xl px-5 py-20 lg:px-10">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Вітрина</p>
+              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                Вітрина
+              </p>
               <h2 className="mt-3 font-sans text-4xl font-black tracking-[-0.05em] sm:text-5xl">
                 Набирайте
                 <br />
                 скільки хочеться.
               </h2>
-              <p className="mt-3 text-sm text-muted-foreground"><b>Ціни вказані за 100 г</b> · можна зібрати свій мікс</p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                <b>Ціни вказані за 100 г</b> · можна зібрати свій мікс
+              </p>
             </div>
             <div className="flex gap-2 overflow-x-auto pb-1">
               {categories.map((c) => (
@@ -347,7 +445,9 @@ export function KFoodSite() {
                   key={c}
                   onClick={() => setActive(c)}
                   className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold transition-colors duration-200 cursor-pointer ${
-                    active === c ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'border border-border hover:bg-secondary'
+                    active === c
+                      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                      : 'border border-border hover:bg-secondary'
                   }`}
                 >
                   {c}
@@ -355,19 +455,33 @@ export function KFoodSite() {
               ))}
             </div>
           </div>
+
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {filtered.map((p) => (
-              <article key={p.id} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card">
+              <article
+                key={p.id}
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card"
+              >
                 <div className="relative aspect-square overflow-hidden bg-secondary">
-                  <img src={p.image} alt={p.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <span className="absolute left-3 top-3 rounded-full bg-card px-3 py-1 font-mono text-[10px] font-bold uppercase">{p.tag}</span>
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-card px-3 py-1 font-mono text-[10px] font-bold uppercase">
+                    {p.tag}
+                  </span>
                 </div>
                 <div className="flex flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-base font-black leading-tight">{p.name}</h3>
-                    <span className="whitespace-nowrap font-mono text-sm font-bold">{p.price} грн. / {p.unit}</span>
+                    <span className="whitespace-nowrap font-mono text-sm font-bold">
+                      {p.price} грн. / {p.unit}
+                    </span>
                   </div>
-                  <p className="mt-2 flex-1 text-sm leading-5 text-muted-foreground">{p.description}</p>
+                  <p className="mt-2 flex-1 text-sm leading-5 text-muted-foreground">
+                    {p.description}
+                  </p>
                   <button
                     onClick={() => add(p.id)}
                     className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-secondary py-3 text-sm font-bold transition-colors duration-200 hover:bg-primary hover:text-primary-foreground"
@@ -380,11 +494,14 @@ export function KFoodSite() {
           </div>
         </section>
 
+        {/* Delivery */}
         <section id="delivery" className="border-t border-border bg-secondary/40 px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
               <div>
-                <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Доставка і оплата</p>
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                  Доставка і оплата
+                </p>
                 <h2 className="mt-3 font-sans text-4xl font-black tracking-[-0.05em] sm:text-5xl">
                   Доставимо так,
                   <br />
@@ -392,8 +509,8 @@ export function KFoodSite() {
                 </h2>
               </div>
               <p className="max-w-sm text-sm leading-6 text-muted-foreground">
-                Обирайте зручний спосіб отримання — кур&apos;єром по Одесі, поштою по Україні чи в Європу,
-                або самовивіз просто з ринку.
+                Обирайте зручний спосіб отримання — кур&apos;єром по Одесі, поштою по Україні чи в
+                Європу, або самовивіз просто з ринку.
               </p>
             </div>
 
@@ -406,7 +523,6 @@ export function KFoodSite() {
                   <h3 className="mt-5 text-lg font-black leading-tight">{d.zone}</h3>
                   <p className="mt-1 font-mono text-xl font-black text-primary">{d.price}</p>
                   <p className="mt-1 text-sm leading-5 text-muted-foreground">{d.priceNote}</p>
-
                   <div className="mt-5 flex flex-col gap-3 border-t border-border pt-4 text-sm">
                     <div className="flex items-start gap-2.5">
                       <Clock size={16} className="mt-0.5 shrink-0 text-muted-foreground" />
@@ -431,22 +547,39 @@ export function KFoodSite() {
 
             <div className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center">
               <p className="text-sm leading-6 text-muted-foreground">
-                Точну вартість доставки та строки для вашого міста Вікторія підкаже особисто у Viber —
-                це займе хвилину.
+                Точну вартість доставки та строки для вашого міста Вікторія підкаже особисто у
+                Viber або Telegram — це займе хвилину.
               </p>
-              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className={viberButton}>
-                <Phone size={16} /> Уточнити доставку у Viber
-              </a>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+                  onClick={handleViberClick}
+                  className={viberButton}
+                >
+                  <Phone size={16} /> Viber
+                </a>
+                <a
+                  href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+                  onClick={handleTelegramClick}
+                  className={telegramButton}
+                >
+                  <MessageCircle size={16} /> Telegram
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
+        {/* Markets */}
         <section id="markets" className="px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
-            <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Забирайте або замовляйте</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+              Забирайте або замовляйте
+            </p>
             <h2 className="mt-3 font-sans text-3xl font-black tracking-[-0.04em] sm:text-4xl">
               Де знайти наші соління
             </h2>
+
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <a
                 href={CHEREMUSHKY_MAP_LINK}
@@ -463,7 +596,9 @@ export function KFoodSite() {
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <MapPin size={20} />
                   </span>
-                  <h3 className="mt-6 text-2xl font-black underline-offset-4 group-hover:underline">Черьомушки</h3>
+                  <h3 className="mt-6 text-2xl font-black underline-offset-4 group-hover:underline">
+                    Черьомушки
+                  </h3>
                   <p className="mt-2 flex-1 leading-6 text-muted-foreground">
                     Одеса, ринок на Черьомушках
                     <br />
@@ -490,7 +625,9 @@ export function KFoodSite() {
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <MapPin size={20} />
                   </span>
-                  <h3 className="mt-6 text-2xl font-black underline-offset-4 group-hover:underline">Північний ринок</h3>
+                  <h3 className="mt-6 text-2xl font-black underline-offset-4 group-hover:underline">
+                    Північний ринок
+                  </h3>
                   <p className="mt-2 flex-1 leading-6 text-muted-foreground">
                     Одеса, Північний ринок
                     <br />
@@ -502,11 +639,7 @@ export function KFoodSite() {
                 </div>
               </a>
 
-              <a
-                href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
-                onClick={handleViberClick}
-                className="group relative flex min-h-[240px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl bg-[#7360f2] p-7 text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#5d4bd9] hover:shadow-lg"
-              >
+              <div className="group relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-[#7360f2] to-[#229ED9] p-7 text-white shadow-sm">
                 <div>
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15">
                     <Phone size={20} />
@@ -518,24 +651,40 @@ export function KFoodSite() {
                     та до Європи
                   </p>
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex flex-col gap-2">
                   <p className="font-mono text-base font-bold">{VIBER_PHONE_DISPLAY}</p>
-                  <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold underline-offset-4 group-hover:underline">
-                    Написати у Viber <ArrowRight size={15} />
-                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+                      onClick={handleViberClick}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-bold transition hover:bg-white/30"
+                    >
+                      <Phone size={14} /> Viber
+                    </a>
+                    <a
+                      href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+                      onClick={handleTelegramClick}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-bold transition hover:bg-white/30"
+                    >
+                      <MessageCircle size={14} /> Telegram
+                    </a>
+                  </div>
                 </div>
-              </a>
+              </div>
             </div>
           </div>
         </section>
 
+        {/* About */}
         <section id="about" className="mx-auto grid max-w-7xl gap-8 px-5 py-20 lg:grid-cols-2 lg:px-10">
           <div className="rounded-[2rem] bg-primary p-8 text-primary-foreground sm:p-12">
             <Music2 size={30} />
             <p className="mt-12 max-w-lg text-3xl font-black leading-tight tracking-[-0.04em]">
               «Домашні маринади та свіжі морепродукти — щодня для Одеси і не тільки».
             </p>
-            <div className="mt-8 font-mono text-xs font-bold uppercase tracking-widest">@u_vicktorii · 170.3K лайків</div>
+            <div className="mt-8 font-mono text-xs font-bold uppercase tracking-widest">
+              @u_vicktorii · 170.3K лайків
+            </div>
             <div className="mt-8 grid grid-cols-3 gap-3">
               {topTiktokVideos.map((v, i) => (
                 <a
@@ -553,19 +702,34 @@ export function KFoodSite() {
               ))}
             </div>
           </div>
+
           <div className="flex flex-col justify-center rounded-[2rem] border border-border p-8 sm:p-12">
-            <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">На зв&apos;язку</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+              На зв&apos;язку
+            </p>
             <h2 className="mt-4 text-3xl font-black tracking-[-0.04em]">
               Є питання щодо
               <br />
               асорті чи доставки?
             </h2>
             <p className="mt-4 leading-7 text-muted-foreground">
-              Напишіть Вікторії у Viber або TikTok — підкажемо, що сьогодні найсмачніше. Доставляємо по Одесі, по всій Україні та до Європи.
+              Напишіть Вікторії у Viber, Telegram або TikTok — підкажемо, що сьогодні найсмачніше.
+              Доставляємо по Одесі, по всій Україні та до Європи.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className={viberButton}>
+              <a
+                href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+                onClick={handleViberClick}
+                className={viberButton}
+              >
                 <Phone size={16} /> Viber: {VIBER_PHONE_DISPLAY}
+              </a>
+              <a
+                href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+                onClick={handleTelegramClick}
+                className={telegramButton}
+              >
+                <MessageCircle size={16} /> Telegram
               </a>
               <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className={outlineButton}>
                 Відкрити TikTok <ArrowRight size={16} />
@@ -574,10 +738,13 @@ export function KFoodSite() {
           </div>
         </section>
 
+        {/* TikTok section */}
         <section className="border-t border-border bg-secondary/40 px-5 py-16 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="mb-10 text-center">
-              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">TikTok</p>
+              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                TikTok
+              </p>
               <h2 className="mt-3 font-sans text-3xl font-black tracking-[-0.04em] sm:text-4xl">
                 Свіжі TikTok-відео від Вікторії
               </h2>
@@ -585,23 +752,29 @@ export function KFoodSite() {
                 Нові соління та кулінарні моменти
               </p>
             </div>
-
             <div className="flex justify-center">
-              <div
-                className="elfsight-app-87f8bb85-a6f2-4f8e-b87e-40bcd4e1e50f w-full max-w-5xl"
-              />
+              <div className="elfsight-app-87f8bb85-a6f2-4f8e-b87e-40bcd4e1e50f w-full max-w-5xl" />
             </div>
           </div>
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="border-t border-border px-5 py-10 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 text-center text-sm sm:flex-row sm:items-center sm:justify-between sm:text-left">
-          <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="font-sans text-xl font-black tracking-[-0.08em] transition-colors duration-200 hover:text-primary">
+          <a
+            href={TIKTOK_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="font-sans text-xl font-black tracking-[-0.08em] transition-colors duration-200 hover:text-primary"
+          >
             У <span className="text-primary">Вікторії</span>
           </a>
           <div className="flex flex-col items-center gap-3 text-muted-foreground sm:flex-row sm:gap-5">
-            <a href="#delivery" className="inline-flex items-center gap-2 transition-colors duration-200 hover:text-primary">
+            <a
+              href="#delivery"
+              className="inline-flex items-center gap-2 transition-colors duration-200 hover:text-primary"
+            >
               <Truck size={15} /> Доставка і оплата
             </a>
             <a
@@ -620,44 +793,115 @@ export function KFoodSite() {
             >
               <MapPin size={15} /> Північний ринок
             </a>
-            <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className="inline-flex items-center gap-2 font-semibold text-[#7360f2] transition-colors duration-200 hover:text-[#5d4bd9]">
-              <Phone size={15} /> {VIBER_PHONE_DISPLAY}
+            <a
+              href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+              onClick={handleViberClick}
+              className="inline-flex items-center gap-2 font-semibold text-[#7360f2] transition-colors duration-200 hover:text-[#5d4bd9]"
+            >
+              <Phone size={15} /> Viber
             </a>
-            <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" aria-label="TikTok" className="transition-colors duration-200 hover:text-primary">
+            <a
+              href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+              onClick={handleTelegramClick}
+              className="inline-flex items-center gap-2 font-semibold text-[#229ED9] transition-colors duration-200 hover:text-[#1b8bc4]"
+            >
+              <MessageCircle size={15} /> Telegram
+            </a>
+            <a
+              href={TIKTOK_LINK}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="TikTok"
+              className="transition-colors duration-200 hover:text-primary"
+            >
               <Music2 size={17} />
             </a>
           </div>
-          <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="text-muted-foreground transition-colors duration-200 hover:text-primary">
+          <a
+            href={TIKTOK_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted-foreground transition-colors duration-200 hover:text-primary"
+          >
             © 2026 У Вікторії
           </a>
         </div>
       </footer>
 
-      {totalItems > 0 && (
+      {/* ===== STICKY FLOATING BUTTONS (завжди видимі) ===== */}
+      <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
+        {/* Кошик (показується завжди, але з кількістю коли є товари) */}
         <button
           onClick={() => setCartOpen(true)}
-          className="fixed bottom-5 right-5 z-30 flex cursor-pointer items-center gap-3 rounded-full bg-primary px-5 py-4 text-sm font-bold text-primary-foreground shadow-2xl transition-colors duration-200 hover:bg-primary/90"
+          className="flex cursor-pointer items-center gap-3 rounded-full bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground shadow-2xl transition-all duration-200 hover:bg-primary/90 active:scale-95"
+          aria-label="Відкрити кошик"
         >
-          <ShoppingBag size={18} /> У кошику {totalItems} · {total} ₴
+          <ShoppingBag size={18} />
+          {totalItems > 0 ? (
+            <span>
+              {totalItems} · {total} ₴
+            </span>
+          ) : (
+            <span>Кошик</span>
+          )}
         </button>
-      )}
 
+        {/* Viber sticky */}
+        <a
+          href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+          onClick={handleViberClick}
+          className="flex cursor-pointer items-center gap-2 rounded-full bg-[#7360f2] px-5 py-3.5 text-sm font-bold text-white shadow-2xl transition-all duration-200 hover:bg-[#5d4bd9] active:scale-95"
+          aria-label="Написати у Viber"
+        >
+          <Phone size={18} />
+          <span className="hidden sm:inline">Viber</span>
+        </a>
+
+        {/* Telegram sticky */}
+        <a
+          href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+          onClick={handleTelegramClick}
+          className="flex cursor-pointer items-center gap-2 rounded-full bg-[#229ED9] px-5 py-3.5 text-sm font-bold text-white shadow-2xl transition-all duration-200 hover:bg-[#1b8bc4] active:scale-95"
+          aria-label="Написати у Telegram"
+        >
+          <MessageCircle size={18} />
+          <span className="hidden sm:inline">Telegram</span>
+        </a>
+      </div>
+
+      {/* Cart Drawer */}
       {cartOpen && (
         <div className="fixed inset-0 z-50 flex items-end justify-end bg-foreground/40 sm:items-stretch">
-          <button className="absolute inset-0 cursor-default" onClick={() => setCartOpen(false)} aria-label="Закрити кошик" />
-          <aside className="relative flex h-[80vh] w-full flex-col rounded-t-3xl bg-card p-6 sm:h-full sm:max-w-md sm:rounded-none">
+          <button
+            className="absolute inset-0 cursor-default"
+            onClick={() => setCartOpen(false)}
+            aria-label="Закрити кошик"
+          />
+          <aside className="relative flex h-[85vh] w-full flex-col rounded-t-3xl bg-card p-6 sm:h-full sm:max-w-md sm:rounded-none">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-black">Ваш кошик</h2>
-              <button onClick={() => setCartOpen(false)} aria-label="Закрити" className="cursor-pointer transition-colors duration-200 hover:text-primary">
+              <button
+                onClick={() => setCartOpen(false)}
+                aria-label="Закрити"
+                className="cursor-pointer transition-colors duration-200 hover:text-primary"
+              >
                 <X />
               </button>
             </div>
+
             <div className="flex-1 overflow-y-auto py-6">
-              {totalItems === 0 && <p className="text-sm text-muted-foreground">Кошик поки порожній. Додайте товари з асортименту.</p>}
+              {totalItems === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  Кошик поки порожній. Додайте товари з асортименту.
+                </p>
+              )}
               {products
                 .filter((p) => cart[p.id])
                 .map((p) => (
-                  <div key={p.id} className="flex items-center justify-between gap-3 border-b border-border py-4">
+                  <div
+                    key={p.id}
+                    className="flex items-center justify-between gap-3 border-b border-border py-4"
+                  >
                     <div>
                       <p className="font-bold">{p.name}</p>
                       <p className="font-mono text-sm text-muted-foreground">
@@ -684,14 +928,17 @@ export function KFoodSite() {
                   </div>
                 ))}
             </div>
+
             <div className="border-t border-border pt-5">
               <div className="flex justify-between text-lg font-black">
                 <span>Разом</span>
                 <span>{total} ₴</span>
               </div>
+
               {totalItems > 0 && total < 300 && (
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Мінімальне замовлення для доставки — 300 ₴. Додайте ще на {300 - total} ₴ або оберіть самовивіз.
+                  Мінімальне замовлення для доставки — 300 ₴. Додайте ще на {300 - total} ₴ або
+                  оберіть самовивіз.
                 </p>
               )}
 
@@ -711,15 +958,33 @@ export function KFoodSite() {
                 )}
               </button>
               <p className="mt-2 text-center text-xs text-muted-foreground">
-                Вставте скопійований текст у Viber або TikTok
+                Вставте скопійований текст у Viber або Telegram
               </p>
 
-              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#7360f2] py-4 font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] hover:shadow-md active:scale-[0.98]">
-                <Check size={18} /> Уточнити замовлення у Viber
-              </a>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <a
+                  href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`}
+                  onClick={handleViberClick}
+                  className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#7360f2] py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#5d4bd9] active:scale-[0.98]"
+                >
+                  <Phone size={16} /> Viber
+                </a>
+                <a
+                  href={`https://t.me/+${VIBER_RAW_NUMBER}`}
+                  onClick={handleTelegramClick}
+                  className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#229ED9] py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#1b8bc4] active:scale-[0.98]"
+                >
+                  <MessageCircle size={16} /> Telegram
+                </a>
+              </div>
 
-              <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]">
-                Уточнити замовлення у TikTok
+              <a
+                href={TIKTOK_LINK}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]"
+              >
+                Уточнити у TikTok
               </a>
             </div>
           </aside>
