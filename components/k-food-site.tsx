@@ -1,7 +1,24 @@
 'use client'
 
 import { useMemo, useState, useCallback, MouseEvent } from 'react'
-import { ArrowRight, Check, ClipboardCopy, MapPin, Minus, Music2, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
+import {
+  ArrowRight,
+  Banknote,
+  Check,
+  ClipboardCopy,
+  Clock,
+  MapPin,
+  Minus,
+  Music2,
+  Package,
+  Phone,
+  Plus,
+  ShoppingBag,
+  Star,
+  Truck,
+  Wallet,
+  X,
+} from 'lucide-react'
 
 const VIBER_PHONE_DISPLAY = '+380 96 898 46 26'
 const VIBER_RAW_NUMBER = '380968984626'
@@ -63,6 +80,46 @@ const products = [
   { id: 15, category: 'Гриби', name: 'Гриби ерингі по-корейськи', description: 'Ерингі з цибулею, соєвим соусом та перцем чилі.', price: 60, unit: '100 г', image: '/images/eggplant.png', tag: 'Соковиті' },
   { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
 ];
+
+// Умови доставки по кожному напрямку — редагуйте суми/терміни тут, вони підтягнуться в секцію "Доставка і оплата"
+const deliveryOptions = [
+  {
+    icon: Truck,
+    zone: 'По Одесі',
+    price: 'від 70 ₴',
+    priceNote: 'безкоштовно від 700 ₴ замовлення',
+    time: 'сьогодні–завтра',
+    minOrder: '300 ₴',
+    payment: 'готівка кур\u2019єру або переказ на карту',
+  },
+  {
+    icon: Package,
+    zone: 'По Україні',
+    price: 'за тарифом перевізника',
+    priceNote: 'Нова пошта / Укрпошта, склад або відділення',
+    time: '1–3 дні',
+    minOrder: '500 ₴',
+    payment: 'передоплата на карту',
+  },
+  {
+    icon: MapPin,
+    zone: 'До Європи',
+    price: 'за тарифом перевізника',
+    priceNote: 'Meest або інша міжнародна служба',
+    time: '5–10 днів',
+    minOrder: '1000 ₴',
+    payment: 'передоплата на карту',
+  },
+  {
+    icon: Banknote,
+    zone: 'Самовивіз з ринку',
+    price: 'безкоштовно',
+    priceNote: 'Черьомушки або Північний ринок',
+    time: 'у дні роботи ринку',
+    minOrder: 'без мінімуму',
+    payment: 'готівка або картка на місці',
+  },
+]
 
 const primaryButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md active:scale-[0.98]'
 const outlineButton = 'inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold transition-all duration-200 hover:border-primary hover:bg-secondary hover:text-primary active:scale-[0.98]'
@@ -173,6 +230,9 @@ export function KFoodSite() {
             <a href="#menu" className="transition-colors duration-200 hover:text-primary">
               Асортимент
             </a>
+            <a href="#delivery" className="transition-colors duration-200 hover:text-primary">
+              Доставка і оплата
+            </a>
             <a href="#markets" className="transition-colors duration-200 hover:text-primary">
               Де купити
             </a>
@@ -230,6 +290,16 @@ export function KFoodSite() {
                 12K+ підписників у @u_vicktorii
               </a>
             </div>
+            <a
+              href="#delivery"
+              className="mt-6 flex max-w-md items-center gap-4 rounded-2xl border border-border px-5 py-4 text-sm transition-colors duration-200 hover:border-primary hover:bg-secondary"
+            >
+              <Truck size={20} className="shrink-0 text-primary" />
+              <span>
+                Мін. замовлення від <b>300 ₴</b>, по Одесі — від <b>70 ₴</b>, безкоштовно від 700 ₴.{' '}
+                <span className="font-bold text-primary">Умови доставки →</span>
+              </span>
+            </a>
           </div>
           <a href="#menu" className="group relative block">
             <div className="aspect-[1.05] overflow-hidden rounded-[2rem] bg-secondary">
@@ -311,7 +381,68 @@ export function KFoodSite() {
           </div>
         </section>
 
-        <section id="markets" className="bg-secondary px-5 py-20 lg:px-10">
+        <section id="delivery" className="border-t border-border bg-secondary/40 px-5 py-20 lg:px-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+              <div>
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Доставка і оплата</p>
+                <h2 className="mt-3 font-sans text-4xl font-black tracking-[-0.05em] sm:text-5xl">
+                  Прозорі умови,
+                  <br />
+                  без сюрпризів.
+                </h2>
+              </div>
+              <p className="max-w-sm text-sm leading-6 text-muted-foreground">
+                Обирайте зручний спосіб отримання — кур&apos;єром по Одесі, поштою по Україні чи в Європу,
+                або самовивіз просто з ринку.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {deliveryOptions.map((d) => (
+                <div key={d.zone} className="flex flex-col rounded-2xl border border-border bg-card p-6">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <d.icon size={20} />
+                  </span>
+                  <h3 className="mt-5 text-lg font-black leading-tight">{d.zone}</h3>
+                  <p className="mt-1 font-mono text-xl font-black text-primary">{d.price}</p>
+                  <p className="mt-1 text-sm leading-5 text-muted-foreground">{d.priceNote}</p>
+
+                  <div className="mt-5 flex flex-col gap-3 border-t border-border pt-4 text-sm">
+                    <div className="flex items-start gap-2.5">
+                      <Clock size={16} className="mt-0.5 shrink-0 text-muted-foreground" />
+                      <span>
+                        Термін: <b>{d.time}</b>
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <ShoppingBag size={16} className="mt-0.5 shrink-0 text-muted-foreground" />
+                      <span>
+                        Мін. замовлення: <b>{d.minOrder}</b>
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <Wallet size={16} className="mt-0.5 shrink-0 text-muted-foreground" />
+                      <span>Оплата: {d.payment}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-col items-start justify-between gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center">
+              <p className="text-sm leading-6 text-muted-foreground">
+                Точну вартість доставки та строки для вашого міста Вікторія підкаже особисто у Viber —
+                це займе хвилину.
+              </p>
+              <a href={`viber://chat?number=%2B${VIBER_RAW_NUMBER}`} onClick={handleViberClick} className={viberButton}>
+                <Phone size={16} /> Уточнити доставку у Viber
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="markets" className="px-5 py-20 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Забирайте або замовляйте</p>
             <h2 className="mt-3 font-sans text-3xl font-black tracking-[-0.04em] sm:text-4xl">
@@ -471,6 +602,9 @@ export function KFoodSite() {
             У <span className="text-primary">Вікторії</span>
           </a>
           <div className="flex flex-col items-center gap-3 text-muted-foreground sm:flex-row sm:gap-5">
+            <a href="#delivery" className="inline-flex items-center gap-2 transition-colors duration-200 hover:text-primary">
+              <Truck size={15} /> Доставка і оплата
+            </a>
             <a
               href={CHEREMUSHKY_MAP_LINK}
               target="_blank"
@@ -556,6 +690,11 @@ export function KFoodSite() {
                 <span>Разом</span>
                 <span>{total} ₴</span>
               </div>
+              {totalItems > 0 && total < 300 && (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Мінімальне замовлення для доставки — 300 ₴. Додайте ще на {300 - total} ₴ або оберіть самовивіз.
+                </p>
+              )}
 
               <button
                 onClick={handleCopyOrder}
