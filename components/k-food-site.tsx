@@ -387,9 +387,9 @@ export function KFoodSite() {
               <div>
                 <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">Доставка і оплата</p>
                 <h2 className="mt-3 font-sans text-4xl font-black tracking-[-0.05em] sm:text-5xl">
-                  Прозорі умови,
+                  Доставимо так,
                   <br />
-                  без сюрпризів.
+                  як вам зручно.
                 </h2>
               </div>
               <p className="max-w-sm text-sm leading-6 text-muted-foreground">
