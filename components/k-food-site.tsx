@@ -81,7 +81,6 @@ const products = [
   { id: 16, category: 'Гострі', name: 'Кімчі з редькою', description: 'Гостра редька кактегі у традиційному маринаді.', price: 45, unit: '100 г', image: '/images/korean-pickles-hero.png', tag: 'Гостро' },
 ];
 
-// Умови доставки по кожному напрямку — редагуйте суми/терміни тут, вони підтягнуться в секцію "Доставка і оплата"
 const deliveryOptions = [
   {
     icon: Truck,
@@ -366,7 +365,7 @@ export function KFoodSite() {
                 <div className="flex flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-base font-black leading-tight">{p.name}</h3>
-                    <span className="whitespace-nowrap font-mono text-sm font-bold">{p.price} ₴</span>
+                    <span className="whitespace-nowrap font-mono text-sm font-bold">{p.price} ₴ за {p.unit}</span>
                   </div>
                   <p className="mt-2 flex-1 text-sm leading-5 text-muted-foreground">{p.description}</p>
                   <button
