@@ -15,6 +15,21 @@ const NORTHERN_MARKET_MAP_LINK = `https://www.google.com/maps/search/?api=1&quer
 const CHEREMUSHKY_MAP_IMAGE = 'https://staticmap.openstreetmap.de/staticmap.php?center=46.4360,30.7590&zoom=14&size=600x400&maptype=mapnik&markers=46.4360,30.7590,red-pushpin'
 const NORTHERN_MARKET_MAP_IMAGE = 'https://staticmap.openstreetmap.de/staticmap.php?center=46.4950,30.7100&zoom=14&size=600x400&maptype=mapnik&markers=46.4950,30.7100,red-pushpin'
 
+// Куда предлагать установить Viber, в зависимости от платформы пользователя
+const getViberInstallUrl = () => {
+  if (typeof navigator === 'undefined') return 'https://www.viber.com/download/'
+  const ua = navigator.userAgent || ''
+
+  if (/android/i.test(ua)) {
+    return 'https://play.google.com/store/apps/details?id=com.viber.voip'
+  }
+  if (/iphone|ipad|ipod/i.test(ua)) {
+    return 'https://apps.apple.com/app/viber-messenger/id382617920'
+  }
+  // десктоп / прочее — общая страница загрузки
+  return 'https://www.viber.com/download/'
+}
+
 const topTiktokVideos = [
   { url: TIKTOK_LINK1, title: 'Ринок Черьомушки' },
   { url: TIKTOK_LINK2, title: 'Північний ринок' },
@@ -62,7 +77,7 @@ export function KFoodSite() {
     e.preventDefault()
 
     const selectedProducts = products.filter((p) => cart[p.id] && cart[p.id] > 0)
-    
+
     let messageText = 'Вітаю! Хочу уточнити замовлення:'
     if (selectedProducts.length > 0) {
       const itemsList = selectedProducts
@@ -72,23 +87,35 @@ export function KFoodSite() {
     }
 
     const viberAppUrl = `viber://chat?number=%2B${VIBER_RAW_NUMBER}&text=${encodeURIComponent(messageText)}`
-    const start = Date.now()
+
+    // Если Viber открывается, страница уходит из фокуса/скрывается —
+    // это и есть надёжный сигнал, что приложение установлено и запустилось.
+    let appLikelyOpened = false
+    const markOpened = () => {
+      appLikelyOpened = true
+    }
+
+    document.addEventListener('visibilitychange', markOpened)
+    window.addEventListener('blur', markOpened)
+    window.addEventListener('pagehide', markOpened)
 
     window.location.href = viberAppUrl
 
     setTimeout(() => {
-      if (Date.now() - start < 2000) {
-        const confirmDownload = window.confirm(
-          'Схоже, додаток Viber не встановлено.\nБажаєте завантажити Viber? Натисніть "ОК", щоб завантажити Viber, або "Скасувати", щоб перейти у TikTok.'
-        )
+      document.removeEventListener('visibilitychange', markOpened)
+      window.removeEventListener('blur', markOpened)
+      window.removeEventListener('pagehide', markOpened)
 
-        if (confirmDownload) {
-          window.open('https://www.viber.com/download/', '_blank')
-        } else {
-          window.open(TIKTOK_LINK, '_blank')
+      // Если страница так и не потеряла фокус — Viber, скорее всего, не установлен
+      if (!appLikelyOpened && !document.hidden) {
+        const wantsInstall = window.confirm(
+          'Схоже, додаток Viber не встановлено.\nВстановити Viber зараз?'
+        )
+        if (wantsInstall) {
+          window.open(getViberInstallUrl(), '_blank')
         }
       }
-    }, 1500)
+    }, 1200)
   }, [cart, total])
 
   return (
