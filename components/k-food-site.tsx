@@ -183,7 +183,7 @@ export function KFoodSite() {
                 <Star size={14} fill="currentColor" />
               </div>
               <a href={TIKTOK_LINK} target="_blank" rel="noreferrer" className="text-muted-foreground underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline">
-                11K підписників у @u_vicktorii
+                12+K підписників у @u_vicktorii
               </a>
             </div>
           </div>
