@@ -72,7 +72,7 @@ const products = [
     description: 'Хрустка морква з часником, коріандром та ароматною олією.',
     price: 20,
     unit: '100 г',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Korean-style_carrot.jpg',
+    image: '/images/korean-carrot.png',
     tag: 'Хіт',
   },
   {
@@ -82,7 +82,7 @@ const products = [
     description: 'Ніжні свинячі вуха, приготовані до м’якості.',
     price: 50,
     unit: '100 г',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Marinated_pork_ears.jpg',
+    image: '/images/vuha-var.png',
     tag: 'Класика',
   },
   {
@@ -92,7 +92,7 @@ const products = [
     description: 'Ароматні копчені свинячі вуха з насиченим смаком.',
     price: 50,
     unit: '100 г',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Smoked_pig%27s_ears_with_mustard.JPG',
+    image: '/images/vuha-kop.png',
     tag: 'Копчені',
   },
   {
@@ -102,7 +102,7 @@ const products = [
     description: 'Ніжний кальмар у пряному маринаді по-корейськи.',
     price: 100,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2017/11/13/20/41/calamari-2942624_1280.jpg',
+    image: '/images/kalmar.png',
     tag: 'Морепродукти',
   },
   {
@@ -112,7 +112,7 @@ const products = [
     description: 'Соковиті мідії з прянощами та ароматною олією.',
     price: 80,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=85',
+    image: '/images/midii.png',
     tag: 'Популярне',
   },
   {
@@ -122,7 +122,7 @@ const products = [
     description: 'Морські рапани з виразним смаком та пряним маринадом.',
     price: 200,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=85',
+    image: '/images/rapan.png',
     tag: 'Делікатес',
   },
   {
@@ -132,7 +132,7 @@ const products = [
     description: 'Ніжні шматочки восьминога у фірмовому маринаді.',
     price: 150,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/octopus-1238258_1280.jpg',
+    image: '/images/osminog.png',
     tag: 'Морепродукти',
   },
   {
@@ -142,7 +142,7 @@ const products = [
     description: 'Соковиті креветки з пряними спеціями.',
     price: 150,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=85',
+    image: '/images/krevetki.png',
     tag: 'Популярне',
   },
   {
@@ -152,7 +152,7 @@ const products = [
     description: 'Ніжні палички сурімі у фірмовому приготуванні.',
     price: 100,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=85',
+    image: '/images/surimi.png',
     tag: 'Морепродукти',
   },
   {
@@ -162,7 +162,7 @@ const products = [
     description: 'Хрустка жовта квасоля з пряним маринадом.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/beans-1549397_1280.jpg',
+    image: '/images/fasol_zh.png',
     tag: 'Овочі',
   },
   {
@@ -172,7 +172,7 @@ const products = [
     description: 'Соковита зелена квасоля з ароматними спеціями.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/green-beans-1549396_1280.jpg',
+    image: '/images/fasol.png',
     tag: 'Овочі',
   },
   {
@@ -182,7 +182,7 @@ const products = [
     description: 'Ніжні суцвіття броколі у пряному маринаді.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/broccoli-1238250_1280.jpg',
+    image: '/images/brokoli.jpg',
     tag: 'Овочі',
   },
   {
@@ -192,7 +192,7 @@ const products = [
     description: 'Мініатюрна морква з хрусткою текстурою та спеціями.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1445282768818-728615cc910a?auto=format&fit=crop&w=800&q=85',
+    image: '/images/dekor_mor.png',
     tag: 'Овочі',
   },
   {
@@ -202,7 +202,7 @@ const products = [
     description: 'Солодка кукурудза з легким пряним смаком.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/corn-1238251_1280.jpg',
+    image: '/images/kukuruza.png',
     tag: 'Овочі',
   },
   {
@@ -212,7 +212,7 @@ const products = [
     description: 'Хрусткі суцвіття цвітної капусти у пряному маринаді.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/cauliflower-1238252_1280.jpg',
+    image: '/images/kapusta_ts.png',
     tag: 'Популярне',
   },
   {
@@ -222,7 +222,7 @@ const products = [
     description: 'Ароматний корінь селери з пряними спеціями.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=85',
+    image: '/images/seld.png',
     tag: 'Овочі',
   },
   {
@@ -232,18 +232,8 @@ const products = [
     description: 'Ніжна соєва спаржа з часником та пряною олією.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=85',
+    image: '/images/soev_spar.png',
     tag: 'Популярне',
-  },
-  {
-    id: 18,
-    category: 'Закуски',
-    name: 'Соєві стейки',
-    description: 'Пружні соєві стейки у насиченому маринаді.',
-    price: 50,
-    unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85',
-    tag: 'Закуски',
   },
   {
     id: 19,
@@ -252,7 +242,7 @@ const products = [
     description: 'Хрусткі білі деревні гриби з пряним смаком.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1504545102780-26774c1bb073?auto=format&fit=crop&w=800&q=85',
+    image: '/images/muer_bel.png',
     tag: 'Гриби',
   },
   {
@@ -262,7 +252,7 @@ const products = [
     description: 'Хрусткі чорні деревні гриби у фірмовому маринаді.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1504545102780-26774c1bb073?auto=format&fit=crop&w=800&q=85',
+    image: '/images/muer.png',
     tag: 'Гриби',
   },
   {
@@ -272,7 +262,7 @@ const products = [
     description: 'Ніжний кораловий гриб з цікавою текстурою.',
     price: 80,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=85',
+    image: '/images/koral.png',
     tag: 'Гриби',
   },
   {
@@ -282,7 +272,7 @@ const products = [
     description: 'Морська капуста з легкою кислинкою та пряними спеціями.',
     price: 30,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1530053969600-caed2596d242?auto=format&fit=crop&w=800&q=85',
+    image: '/images/mor_kap.png',
     tag: 'Морські',
   },
   {
@@ -292,7 +282,7 @@ const products = [
     description: 'Яскрава рожева капуста з хрусткою текстурою.',
     price: 30,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=85',
+    image: '/images/pelust.png',
     tag: 'Яскраве',
   },
   {
@@ -302,7 +292,7 @@ const products = [
     description: 'Ніжний салат чука з кунжутом та ароматною заправкою.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2019/07/17/21/06/salad-4343738_1280.jpg',
+    image: '/images/chuka.png',
     tag: 'Популярне',
   },
   {
@@ -312,7 +302,7 @@ const products = [
     description: 'Гостра ароматна аджика для м’яса, овочів та гарнірів.',
     price: 80,
     unit: 'баночка',
-    image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=85',
+    image: '/images/adj.png',
     tag: 'Гостро',
   },
   {
@@ -322,7 +312,7 @@ const products = [
     description: 'Пікантний перець чилі у фірмовому маринаді.',
     price: 70,
     unit: 'баночка',
-    image: 'https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=800&q=85',
+    image: '/images/chili.png',
     tag: 'Гостро',
   },
   {
@@ -332,7 +322,7 @@ const products = [
     description: 'Ніжна рисова локшина для легких азійських закусок.',
     price: 40,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=85',
+    image: '/images/ris_lok.png',
     tag: 'Закуски',
   },
   {
@@ -342,7 +332,7 @@ const products = [
     description: 'Ніжні овочеві голубці з ароматною начинкою.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=85',
+    image: '/images/golub.png',
     tag: 'Популярне',
   },
   {
@@ -352,7 +342,7 @@ const products = [
     description: 'Ніжні рулети з баклажана з сирною начинкою.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=800&q=85',
+    image: '/images/sin_sir.png',
     tag: 'Закуски',
   },
   {
@@ -362,28 +352,8 @@ const products = [
     description: 'Баклажанні рулети з хрусткою морквяною начинкою.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=800&q=85',
+    image: '/images/bak_mor.png',
     tag: 'Закуски',
-  },
-  {
-    id: 31,
-    category: 'Закуски',
-    name: 'Перчики з фетою',
-    description: 'Солодкі перчики з ніжною сирною начинкою.',
-    price: 100,
-    unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=800&q=85',
-    tag: 'Радимо',
-  },
-  {
-    id: 32,
-    category: 'Закуски',
-    name: 'Імбир',
-    description: 'Тонко нарізаний маринований імбир з легкою кислинкою.',
-    price: 40,
-    unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/ginger-1238263_1280.jpg',
-    tag: 'Класика',
   },
   {
     id: 33,
@@ -392,7 +362,7 @@ const products = [
     description: 'Ароматні мариновані опеньки з пряними спеціями.',
     price: 80,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1504545102780-26774c1bb073?auto=format&fit=crop&w=800&q=85',
+    image: '/images/openki.png',
     tag: 'Гриби',
   },
   {
@@ -402,7 +372,7 @@ const products = [
     description: 'Ніжні печериці з часником та ароматною олією.',
     price: 50,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/mushrooms-1238265_1280.jpg',
+    image: '/images/shamp.png',
     tag: 'Гриби',
   },
   {
@@ -412,7 +382,7 @@ const products = [
     description: 'Ароматні гриби шиїтаке з насиченим смаком.',
     price: 80,
     unit: '100 г',
-    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/shiitake-1238266_1280.jpg',
+    image: '/images/shiitake.png',
     tag: 'Гриби',
   },
   {
@@ -422,7 +392,7 @@ const products = [
     description: 'Смажені баклажани з гострим перцем та часником.',
     price: 30,
     unit: '100 г',
-    image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800&q=85',
+    image: '/images/vognik.png',
     tag: 'Гостро',
   },
   {
@@ -432,7 +402,7 @@ const products = [
     description: 'Пекінська капуста, червоний перець, часник та пряний маринад.',
     price: 50,
     unit: '100 г',
-    image: 'https://images.pexels.com/photos/32087651/pexels-photo-32087651.jpeg',
+    image: '/images/kimchi.png',
     tag: 'Хіт',
   },
 ]
