@@ -62,8 +62,6 @@ const topTiktokVideos = [
   { url: TIKTOK_LINK3, title: 'Асортимент' },
 ]
 
-const categories = ['Всі', 'Овочі', 'Гриби', 'Морепродукти', 'Гострі']
-
 const categories = ['Всі', 'Овочі', 'Гриби', 'Морепродукти', 'М’ясні', 'Водорості', 'Закуски', 'Гострі']
 
 const products = [
