@@ -82,7 +82,7 @@ const products = [
     description: 'Ніжні свинячі вуха, приготовані до м’якості.',
     price: 50,
     unit: '100 г',
-    image: '/images/vuha-var.png',
+    image: '/images/vuha_var.png',
     tag: 'Класика',
   },
   {
